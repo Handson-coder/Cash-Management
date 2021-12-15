@@ -1,0 +1,96 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* .container-parent {
+  background-image: url("./assets//money.jpeg");
+} */
+
+.button-option {
+  display: flex;
+  justify-content: space-around;
+}
+
+.header-cash {
+  display: flex;
+  justify-content: center;
+}
+
+.current-balance {
+  display: flex;
+  justify-content: center;
+}
+
+.form-parent {
+  width: 98vw;
+}
+
+.form-container {
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 3rem;
+}
+
+.form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-nya {
+  width: 50rem;
+}
+
+.form-nya-subEvent {
+  width: 30rem;
+}
+
+.form-nya .seperate {
+  display: flex;
+  justify-content: space-between;
+}
+
+.form-nya-subEvent .seperate {
+  display: flex;
+  justify-content: space-between;
+}
+
+.header-table-subEvent {
+  display: flex;
+  justify-content: center;
+}
+
+.signin {
+  font-family: "Nunito", sans-serif;
+  justify-content: center;
+  text-align: center;
+  height: fit-content;
+  width: fit-content;
+  justify-content: center;
+  align-items: center;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  padding-left: 5rem;
+  padding-right: 5rem;
+  border-radius: 25px;
+}
+
+.header-cash-child {
+  width: 35%;
+}

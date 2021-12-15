@@ -1,0 +1,50 @@
+[
+    {
+        "keterangan": "Sewa Kendaraan Roda 4 Terjauh",
+        "unit": "ut",
+        "price": 700000,
+        "qty": 24,
+        "jumlahBiaya": 16800000,
+        "EventId": 1
+    },
+    {
+        "keterangan": "Sewa Kendaraan Roda 4 Luar Kota",
+        "unit": "ut",
+        "price": 700000,
+        "qty": 72,
+        "jumlahBiaya": 50400000,
+        "EventId": 1
+    },
+    {
+        "keterangan": "Sewa Kendaraan Roda 4 Sekitar Kota Medan",
+        "unit": "ut",
+        "price": 700000,
+        "qty": 30,
+        "jumlahBiaya": 21000000,
+        "EventId": 1
+    },
+    {
+        "keterangan": "Sewa Kendaraan Roda 4 Dalam Kota Medan",
+        "unit": "ut",
+        "price": 700000,
+        "qty": 30,
+        "jumlahBiaya": 21000000,
+        "EventId": 1
+    },
+    {
+        "keterangan": "Makan Rapat",
+        "unit": "ok",
+        "price": 47000,
+        "qty": 20,
+        "jumlahBiaya": 940000,
+        "EventId": 2
+    },
+    {
+        "keterangan": "Snack Rapat",
+        "unit": "ok",
+        "price": 17000,
+        "qty": 20,
+        "jumlahBiaya": 340000,
+        "EventId": 2
+    }
+]

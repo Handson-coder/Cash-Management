@@ -1,0 +1,10 @@
+export const FETCH_EVENTS = 'events/fetchEvents'
+export const FETCH_EVENT = 'event/fetchEvent'
+export const FETCH_CASH = 'cash/fetchCash'
+export const FETCH_SUB_EVENTS = "subEvents/fetchSubEvents"
+export const DELETE_EVENT = "event/deleteEvent"
+export const FETCH_SUB_EVENT = "subEvent/fetchSubEvent"
+export const DELETE_SUB_EVENT = "subEvent/deleteSubEvent"
+export const SET_IS_LOGGED_IN = "isLoggedIn/setIsLoggedIn"
+export const SET_USER_LOGIN = "userLogin/setUserLogin"
+export const FETCH_HISTORIES = "histories/fetchHistories"

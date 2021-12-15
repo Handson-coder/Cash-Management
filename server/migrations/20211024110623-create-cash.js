@@ -9,6 +9,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       cash: {
+        allowNull: false,
         type: Sequelize.INTEGER
       },
       createdAt: {

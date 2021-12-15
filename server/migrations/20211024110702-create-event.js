@@ -8,12 +8,21 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      name: {
+      kode: {
+        allowNull: false,
         type: Sequelize.STRING
       },
-      price: {
+      keterangan: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
+      jumlahBiaya: {
+        allowNull: false,
         type: Sequelize.INTEGER
       },
+      // isFinished: {
+      //   type: Sequelize.BOOLEAN
+      // },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

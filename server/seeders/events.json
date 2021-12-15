@@ -1,18 +1,12 @@
 [
   { 
-    "name": "event1",
-    "price": 1000000
+    "kode": "522141",
+    "jumlahBiaya": 109200000,
+    "keterangan": "Belanja Sewa"
   },
   { 
-    "name": "event2",
-    "price": 2000000
-  },
-  { 
-    "name": "event3",
-    "price": 3000000
-  },
-  { 
-    "name": "event4",
-    "price": 4000000
+    "kode": "521211",
+    "jumlahBiaya": 1280000,
+    "keterangan": "Belanja Bahan"
   }
 ]

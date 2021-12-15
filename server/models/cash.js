@@ -14,7 +14,14 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Cash.init({
-    cash: DataTypes.INTEGER
+    cash: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notEmpty: { msg: 'Silahkan isi kolom nominal' },
+        notNull: { msg: 'Silahkan isi kolom nominal' }
+      }
+    }
   }, {
     sequelize,
     modelName: 'Cash',

@@ -1,13 +1,18 @@
 const router = require('express').Router()
 const routerUser = require('./routerUser')
-// const routerProduct = require('./routerProduct')
-// const routerProduct = require('./routerProduct')
-// const ErrorHandler = require('../middlewares/ErrorHandler')
+const routerCash = require('./routerCash')
+const routerEvent = require('./routerEvent')
+const routerSubEvent = require('./routerSubEvent')
+const routerHistory = require('./routerHistory')
+const authentication = require('../middlewares/authentication')
+const errorHandler = require('../middlewares/errorHandler')
 
 router.use('/users', routerUser)
-// router.use('/cash', routerUser)
-// router.use('/events', routerProduct)
-
-// router.use(ErrorHandler)
+router.use(authentication)
+router.use('/cash', routerCash)
+router.use('/events', routerEvent)
+router.use('/sub-events', routerSubEvent)
+router.use('/histories', routerHistory)
+router.use(errorHandler)
 
 module.exports = router
