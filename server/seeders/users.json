@@ -8,5 +8,10 @@
         "email": "admin@gmail.com",
         "password": "admin123",
         "role": "admin"
-    }
+    },
+    {
+        "email": "hansenpanggabean8@gmail.com",
+        "password": "Sebelasjuni1997",
+        "role": "developer"
+   }
 ]
