@@ -4,12 +4,18 @@ import {
   FETCH_CASH,
   FETCH_SUB_EVENTS,
   DELETE_EVENT,
-  FETCH_EVENT,
   FETCH_SUB_EVENT,
   DELETE_SUB_EVENT,
   SET_IS_LOGGED_IN,
   SET_USER_LOGIN,
   FETCH_HISTORIES,
+  FETCH_CHILD_EVENTS,
+  SET_FATHER_KODE,
+  SET_CHILD_KODE,
+  SET_EVENT_KODE,
+  FETCH_EVENT_FOR_EDIT_EVENT_PAGE,
+  FETCH_EVENT_FOR_TABLE_SUB_EVENT,
+  FETCH_FATHER_EVENTS
 } from "../keys";
 
 const baseUrl = "http://localhost:3000";
@@ -28,9 +34,44 @@ export const setUserLogin = (payload) => {
   };
 };
 
+export const setFatherKode = (payload) => {
+  return {
+    type: SET_FATHER_KODE,
+    payload,
+  };
+};
+
+export const setChildKode = (payload) => {
+  return {
+    type: SET_CHILD_KODE,
+    payload,
+  };
+};
+
+export const setEventKode = (payload) => {
+  return {
+    type: SET_EVENT_KODE,
+    payload,
+  };
+};
+
 export const fetchEvents = (payload) => {
   return {
     type: FETCH_EVENTS,
+    payload,
+  };
+};
+
+export const fetchFatherEvents = (payload) => {
+  return {
+    type: FETCH_FATHER_EVENTS,
+    payload,
+  };
+};
+
+export const fetchChildEvents = (payload) => {
+  return {
+    type: FETCH_CHILD_EVENTS,
     payload,
   };
 };
@@ -49,9 +90,16 @@ export const fetchSubEvents = (payload) => {
   };
 };
 
-export const fetchEvent = (payload) => {
+export const fetchEventForEditEventPage = (payload) => {
   return {
-    type: FETCH_EVENT,
+    type: FETCH_EVENT_FOR_EDIT_EVENT_PAGE,
+    payload,
+  };
+};
+
+export const fetchEventForTableSubEvent = (payload) => {
+  return {
+    type: FETCH_EVENT_FOR_TABLE_SUB_EVENT,
     payload,
   };
 };
@@ -94,6 +142,16 @@ export const fetchingSubEvent = (id) => {
       })
       .then(({ data }) => {
         dispatch(fetchSubEvent(data));
+        if (
+          data &&
+          data.Event &&
+          data.Event.ChildEvent &&
+          data.Event.ChildEvent.FatherEvent
+        ) {
+          dispatch(setEventKode(data.Event.kode));
+          dispatch(setChildKode(data.Event.ChildEvent.kode));
+          dispatch(setFatherKode(data.Event.ChildEvent.FatherEvent.kode));
+        }
       })
       .catch((err) => console.log(err));
   };
@@ -109,6 +167,38 @@ export const fetchingHistories = () => {
       })
       .then(({ data }) => {
         dispatch(fetchHistories(data));
+      })
+      .catch((err) => console.log(err));
+  };
+};
+
+export const fetchingFatherEvents = () => {
+  return (dispatch) => {
+    axios
+      .get(`${baseUrl}/father-events`, {
+        headers: {
+          access_token: localStorage.access_token,
+        },
+      })
+      .then(({ data }) => {
+        console.log(data, 'ini data fetchingFatherEvents');
+        dispatch(fetchFatherEvents(data));
+      })
+      .catch((err) => console.log(err));
+  };
+};
+
+export const fetchingFatherEvent = (id) => {
+  return (dispatch) => {
+    axios
+      .get(`${baseUrl}/father-events/${id}`, {
+        headers: {
+          access_token: localStorage.access_token,
+        },
+      })
+      .then(({ data }) => {
+        console.log(data, 'ini data fetchingFatherEvent');
+        dispatch(fetchChildEvents(data));
       })
       .catch((err) => console.log(err));
   };
@@ -168,7 +258,8 @@ export const fetchingEvent = (id) => {
         },
       })
       .then(({ data }) => {
-        dispatch(fetchEvent(data));
+        dispatch(fetchEventForTableSubEvent(data.eventForTableSubEvent));
+        dispatch(fetchEventForEditEventPage(data.eventForEditEventPage));
       })
       .catch((err) => console.log(err));
   };
@@ -242,11 +333,12 @@ export const updatingEvent = (data, id) => {
   };
 };
 
-export const processSubEvent = (volume, id) => {
+export const processSubEvent = (jumlahBiaya, id) => {
   return (dispatch) => {
+    console.log(jumlahBiaya, id);
     return axios.put(
       `${baseUrl}/sub-events/${id}`,
-      { volume },
+      { jumlahBiaya },
       {
         headers: {
           access_token: localStorage.access_token,
@@ -288,7 +380,41 @@ export const addingSubEvent = (data) => {
 
 export const logout = (riwayat) => {
   return (dispatch) => {
-    return axios.post(`${baseUrl}/histories/logout`, {riwayat}, {
+    return axios.post(
+      `${baseUrl}/histories/logout`,
+      { riwayat },
+      {
+        headers: {
+          access_token: localStorage.access_token,
+        },
+      }
+    );
+  };
+};
+
+export const uploadingEvents = (data) => {
+  return (dispatch) => {
+    return axios.post(`${baseUrl}/events/upload`, data, {
+      headers: {
+        access_token: localStorage.access_token,
+      },
+    });
+  };
+};
+
+export const editingProfile = (data) => {
+  return (dispatch) => {
+    return axios.put(`${baseUrl}/profiles/edit`, data, {
+      headers: {
+        access_token: localStorage.access_token,
+      },
+    });
+  };
+};
+
+export const downloadingFile = (data) => {
+  return (dispatch) => {
+    return axios.get(`${baseUrl}/events/download`, {
       headers: {
         access_token: localStorage.access_token,
       },

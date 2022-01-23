@@ -8,7 +8,23 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      kode: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
+      keterangan: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
       cash: {
+        allowNull: false,
+        type: Sequelize.INTEGER
+      },
+      anggaranAwal: {
+        allowNull: false,
+        type: Sequelize.INTEGER
+      },
+      anggaranTerpakai: {
         allowNull: false,
         type: Sequelize.INTEGER
       },

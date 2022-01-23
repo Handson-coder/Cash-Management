@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -7,7 +7,7 @@ import {
   deletingSubEvent,
   deleteSubEvent,
 } from "../store/actions/index.js";
-import addIcon from '../assets/add.png'
+import addIcon from "../assets/add.png";
 import deleteIcon from "../assets/delete.png";
 import editIcon from "../assets/edit.png";
 import processIcon from "../assets/process.png";
@@ -18,11 +18,16 @@ export default function TableSubEvents() {
   const params = useParams();
   const dispatch = useDispatch();
   const subEvents = useSelector((state) => state.subEvents);
-  const event = useSelector((state) => state.event);
+  const eventForTableSubEvent = useSelector(
+    (state) => state.eventForTableSubEvent
+  );
+  const [classNameForFullView, setClassNameForFullView] = useState(
+    "container-full-view mx-5"
+  );
 
   useEffect(() => {
     dispatch(fetchingEvent(params.id));
-    dispatch(fetchingSubEvents(params.id)) // eslint-disable-next-line
+    dispatch(fetchingSubEvents(params.id)); // eslint-disable-next-line
   }, [dispatch]);
 
   const deleteButton = (id) => {
@@ -47,15 +52,20 @@ export default function TableSubEvents() {
   };
 
   return (
-    <div>
+    <div
+      className=""
+      className={subEvents.length > 4 ? "pb-7 mx-5" : classNameForFullView}
+    >
       <div className="header-table-subEvent">
-        <h1 className="mb-4 mt-4 xs:mb-1 xs:mt-1 text-4xl xs:text-xl font-bold italic text-neutral-focus uppercase">
-          {event.keterangan ? event.keterangan : ""}
+        <h1 className="mb-4 mt-4 xs:mb-1 xs:mt-1 text-4xl xs:text-xl font-bold italic text-accent uppercase">
+          {eventForTableSubEvent.keterangan
+            ? eventForTableSubEvent.keterangan
+            : ""}
         </h1>
         <div className="pt-3 pl-5">
           <NavLink
             className="btn bg-base-100 hover:bg-base-300"
-            to={'/add/sub-event'}
+            to={`/add/sub-event/${eventForTableSubEvent.id}`}
           >
             <img src={addIcon} alt="" />
           </NavLink>
@@ -63,10 +73,10 @@ export default function TableSubEvents() {
       </div>
       <div className="flex flex-col mx-5 bg-neutral rounded-lg shadow-md">
         <div className="-my-5 overflow-x-auto sm:-mx-6 lg:-mx-5">
-          <div className="py-5 align-middle inline-block min-w-full sm:px-6 lg:px-5">
+          <div className="py-5 align-middle inline-block min-w-full">
             <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
               <table className="min-w-full divide-y divide-gray-500 text-center ">
-                <thead className="bg-accent-content">
+                <thead className="bg-base-content">
                   <tr>
                     <th
                       scope="col"
@@ -74,7 +84,7 @@ export default function TableSubEvents() {
                     >
                       keterangan
                     </th>
-                    <th
+                    {/* <th
                       scope="col"
                       className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider"
                     >
@@ -85,12 +95,12 @@ export default function TableSubEvents() {
                       className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider"
                     >
                       harga satuan
-                    </th>
+                    </th> */}
                     <th
                       scope="col"
                       className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider"
                     >
-                      jumlah biaya
+                      anggaran tersisa
                     </th>
                     <th
                       scope="col"
@@ -107,23 +117,20 @@ export default function TableSubEvents() {
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="text-sm">{subEvent.keterangan}</div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        {/* <td className="px-6 py-4 whitespace-nowrap">
                           <div className="text-sm">
                             {subEvent.qty} {subEvent.unit}
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="text-sm">
-                            {(subEvent.price / 1000).toLocaleString("id-id")} K
+                            {subEvent.price.toLocaleString("id-id")}
                           </div>
-                        </td>
+                        </td> */}
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="text-sm">
                             <div className="text-sm">
-                              {(subEvent.jumlahBiaya / 1000).toLocaleString(
-                                "id-id"
-                              )}{" "}
-                              K
+                              {subEvent.jumlahBiaya.toLocaleString("id-id")}
                             </div>
                           </div>
                         </td>

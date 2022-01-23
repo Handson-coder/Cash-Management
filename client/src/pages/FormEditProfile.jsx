@@ -1,52 +1,43 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
+import { editingProfile, setUserLogin } from "../store/actions";
 import { NavLink, useNavigate } from "react-router-dom";
-import { fetchingEvent, updatingEvent } from "../store/actions/index.js";
+import { useDispatch } from "react-redux";
 import Swal from "sweetalert2";
 
-export default function FormEditEvent() {
-  const params = useParams();
+export default function FormEditProfile() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const eventForEditEventPage = useSelector((state) => state.eventForEditEventPage);
+  const [radioButtonClicked, setRadioButtonClicked] = useState(false);
   const [payload, setPayload] = useState({
-    kode: "",
-    keterangan: "",
+    email: "",
+    password: "",
   });
-  useEffect(() => {
-    firstRender(); // eslint-disable-next-line
-  }, [dispatch]);
 
-  const firstRender = async () => {
-    await dispatch(fetchingEvent(params.id));
-    await setPayload({
-      kode: eventForEditEventPage.kode,
-      keterangan: eventForEditEventPage.keterangan,
-    });
+  const inputValue = (e, key) => {
+    const newPayload = { ...payload };
+    newPayload[key] = e.target.value;
+    setPayload(newPayload);
   };
 
   const editButton = () => {
-    Swal.fire({
-      position: "top-end",
-      icon: "info",
-      title: `Loading ...`,
-      text: "Please Wait ...",
-      showConfirmButton: false,
-      timer: 1500,
-    });
-    dispatch(updatingEvent(payload, params.id))
+    let inputValue = payload;
+    if (inputValue.email === "") {
+      inputValue.email = localStorage.email;
+    }
+    dispatch(editingProfile(inputValue))
       .then(({ data }) => {
+        dispatch(setUserLogin(data.user));
+        localStorage.setItem("email", data.user.email);
         Swal.fire({
           position: "top-end",
           icon: "success",
-          title: `Event '${data.keterangan}' telah berhasil di Edit`,
+          title: data.message,
           showConfirmButton: false,
           timer: 1500,
         });
         setPayload({
-          kode: "",
-          keterangan: "",
+          email: "",
+          password: "",
         });
         navigate("/");
       })
@@ -59,18 +50,19 @@ export default function FormEditEvent() {
       });
   };
 
-  const inputValue = (e, key) => {
-    const newPayload = { ...payload };
-    newPayload[key] = e.target.value;
-    setPayload(newPayload);
+  const changeRadioButtonValue = () => {
+    if (radioButtonClicked === true) {
+      setRadioButtonClicked(false);
+    } else {
+      setRadioButtonClicked(true);
+    }
   };
-
   return (
     <div className="form-parent container-full-view">
       <div className="form-container">
         <div className="text-center justify-center hero-content lg:text-left">
           <h1 className="mb-4 mt-4 xs:mb-1 xs:mt-1 text-4xl xs:text-xl font-bold italic text-accent uppercase">
-            Edit Event
+            Edit Profile
           </h1>
         </div>
         <div className="bg-blue-900">
@@ -79,35 +71,47 @@ export default function FormEditEvent() {
               <div className="card-body form-nya">
                 <div className="form-control">
                   <label className="label">
-                    <span className="font-bold">Kode</span>
+                    <span className="font-bold">Email</span>
                   </label>
                   <input
                     type="text"
-                    placeholder="Kode"
+                    placeholder="Email"
                     className="input border-neutral-focus input-bordered "
-                    onChange={(e) => inputValue(e, "kode")}
+                    onChange={(e) => inputValue(e, "email")}
                     value={
-                      payload.kode ? payload.kode : eventForEditEventPage.kode ? eventForEditEventPage.kode : ""
+                      payload.email
+                        ? payload.email
+                        : localStorage.email
+                        ? localStorage.email
+                        : ""
                     }
                   />
                 </div>
                 <div className="form-control mt-5">
                   <label className="label">
-                    <span className="font-bold">Keterangan</span>
+                    <span className="font-bold">Password</span>
                   </label>
                   <input
-                    type="text"
-                    placeholder="Keterangan"
+                    type={radioButtonClicked ? "text" : "password"}
+                    placeholder="Password"
                     className="input border-neutral-focus input-bordered"
-                    onChange={(e) => inputValue(e, "keterangan")}
-                    value={
-                      payload.keterangan
-                        ? payload.keterangan
-                        : eventForEditEventPage.keterangan
-                        ? eventForEditEventPage.keterangan
-                        : ""
-                    }
+                    onChange={(e) => inputValue(e, "password")}
+                    value={payload.password}
                   />
+                </div>
+                <div className="flex mt-1">
+                  <div className="cursor-pointer pr-2 pt-1">
+                    <input
+                      type="radio"
+                      name="opt"
+                      checked={radioButtonClicked}
+                      onClick={changeRadioButtonValue}
+                      className="radio radio-accent radio-sm"
+                    />
+                  </div>
+                  <div>
+                    <span className="label-text">Show password</span>
+                  </div>
                 </div>
                 <div className="mt-5 seperate">
                   <div className="button-cancel">

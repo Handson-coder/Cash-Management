@@ -23,29 +23,45 @@ module.exports = (sequelize, DataTypes) => {
         notNull: { msg: 'Silahkan isi kolom keterangan'}
       }
     },
-    unit: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate : {
-        notEmpty: { msg: 'Silahkan isi kolom satuan'},
-        notNull: { msg: 'Silahkan isi kolom satuan'}
-      }
-    },
-    price: {
+    // unit: {
+    //   type: DataTypes.STRING,
+    //   allowNull: false,
+    //   validate : {
+    //     notEmpty: { msg: 'Silahkan isi kolom satuan'},
+    //     notNull: { msg: 'Silahkan isi kolom satuan'}
+    //   }
+    // },
+    // price: {
+    //   type: DataTypes.INTEGER,
+    //   allowNull: false,
+    //   validate: {
+    //     notEmpty: { msg: 'Silahkan isi kolom harga' },
+    //     notNull: { msg: 'Silahkan isi kolom harga' }
+    //   }
+    // },
+    // qty: {
+    //   type: DataTypes.INTEGER,
+    //   allowNull: false,
+    //   validate: {
+    //     notEmpty: { msg: 'Silahkan isi kolom volume' },
+    //     notNull: { msg: 'Silahkan isi kolom volume' }
+    //   }
+    // },
+    anggaranAwal: {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
-        notEmpty: { msg: 'Silahkan isi kolom harga' },
-        notNull: { msg: 'Silahkan isi kolom harga' }
-      }
+        notEmpty: { msg: "Silahkan isi kolom anggaran awal" },
+        notNull: { msg: "Silahkan isi kolom anggaran awal" },
+      },
     },
-    qty: {
+    anggaranTerpakai: {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
-        notEmpty: { msg: 'Silahkan isi kolom volume' },
-        notNull: { msg: 'Silahkan isi kolom volume' }
-      }
+        notEmpty: { msg: "Silahkan isi kolom anggaran terpakai" },
+        notNull: { msg: "Silahkan isi kolom anggaran terpakai" },
+      },
     },
     jumlahBiaya: {
       type: DataTypes.INTEGER,

@@ -29,8 +29,8 @@ export default function Navbar() {
   };
 
   const signOutButton = () => {
-    const riwayat = 'Seorang user terdeteksi telah log out'
-    dispatch(logout(riwayat))
+    const riwayat = "Seorang user terdeteksi telah log out";
+    dispatch(logout(riwayat));
     dispatch(setIsLoggedIn(false));
     dispatch(setUserLogin({}));
     localStorage.clear();
@@ -38,14 +38,14 @@ export default function Navbar() {
   };
 
   return (
-    <div className="navbar shadow-lg bg-neutral text-neutral-content rounded-lg">
+    <div className="navbar shadow-lg bg-success text-neutral-content rounded-lg">
       {isLoggedIn ? (
         <div className="px-2 mx-2 navbar-start flex">
           <NavLink
             to="/"
-            className="border-2 border-base-content rounded-xl bg-primary-content"
+            className="border-2 border-base-content rounded-xl bg-neutral-content"
           >
-            <img src={logoIcon} alt="" className="w-20 pb-1 pt-2 rounded-xl" />
+            <img src={logoIcon} alt="" className="w-20 pb-1 pt-1 rounded-xl" />
           </NavLink>
           <NavLink to="/" className="btn btn-ghost btn-sm rounded-btn">
             <div>
@@ -57,9 +57,9 @@ export default function Navbar() {
           </NavLink>
         </div>
       ) : (
-        <div className="px-2 mx-2 navbar-start flex">
-          <div className="border-2 border-base-content rounded-xl bg-primary-content">
-            <img src={logoIcon} alt="" className="w-20 pb-1 pt-2 rounded-xl" />
+        <div className="px-2 mx-2 navbar-start flex border-primary-content">
+          <div className="border-2 border-base-content rounded-xl bg-neutral-content">
+            <img src={logoIcon} alt="" className="w-20 pb-1 pt-1 rounded-xl" />
           </div>
           <div className="pl-3">
             <div>
@@ -86,7 +86,7 @@ export default function Navbar() {
               <div className="pl-5">
                 <NavLink
                   to="/history"
-                  className="btn bg-base-100 hover:bg-base-300"
+                  className="btn bg-success border-base-content hover:bg-green-700"
                 >
                   <img src={historyIcon} alt="" />
                 </NavLink>
@@ -100,6 +100,16 @@ export default function Navbar() {
         </div>
       </div>
       <div className="navbar-end">
+        <div className="px-5">
+          {isLoggedIn && (
+            <NavLink
+              to="/profile/edit"
+              className="btn btn-ghost btn-sm rounded-btn"
+            >
+              Edit Profile
+            </NavLink>
+          )}
+        </div>
         <div className="px-5">
           {isLoggedIn ? (
             <button

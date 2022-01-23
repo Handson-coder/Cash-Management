@@ -1,5 +1,4 @@
 export const FETCH_EVENTS = 'events/fetchEvents'
-export const FETCH_EVENT = 'event/fetchEvent'
 export const FETCH_CASH = 'cash/fetchCash'
 export const FETCH_SUB_EVENTS = "subEvents/fetchSubEvents"
 export const DELETE_EVENT = "event/deleteEvent"
@@ -8,3 +7,10 @@ export const DELETE_SUB_EVENT = "subEvent/deleteSubEvent"
 export const SET_IS_LOGGED_IN = "isLoggedIn/setIsLoggedIn"
 export const SET_USER_LOGIN = "userLogin/setUserLogin"
 export const FETCH_HISTORIES = "histories/fetchHistories"
+export const FETCH_CHILD_EVENTS = "childEvents/fetchChildEvents"
+export const FETCH_FATHER_EVENTS = "FETCH_FATHER_EVENTS"
+export const SET_FATHER_KODE = "SET_FATHER_KODE"
+export const SET_CHILD_KODE = "SET_CHILD_KODE"
+export const SET_EVENT_KODE = "SET_EVENT_KODE"
+export const FETCH_EVENT_FOR_EDIT_EVENT_PAGE = "FETCH_EVENT_FOR_EDIT_EVENT_PAGE"
+export const FETCH_EVENT_FOR_TABLE_SUB_EVENT = "FETCH_EVENT_FOR_TABLE_SUB_EVENT"

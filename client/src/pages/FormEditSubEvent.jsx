@@ -4,9 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
   editingSubEvent,
-  fetchingEvents,
   fetchingSubEvent,
-  fetchSubEvent
+  fetchSubEvent,
 } from "../store/actions";
 import Swal from "sweetalert2";
 
@@ -14,33 +13,37 @@ export default function FormEditSubEvent() {
   const params = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const subEvent = useSelector((state) => state.subEvent);
+  const fatherKode = useSelector((state) => state.fatherKode);
+  const childKode = useSelector((state) => state.childKode);
+  const eventKode = useSelector((state) => state.eventKode);
   const [payload, setPayload] = useState({
     keterangan: "",
-    unit: "",
-    price: 0,
-    qty: 0,
+    // unit: "",
+    jumlahBiaya: 0,
+    // qty: 0,
     EventId: 0,
   });
-  const events = useSelector((state) => state.events);
-  const subEvent = useSelector((state) => state.subEvent);
-
+  const [nominalEditDisplay, setNominalEditDisplay] = useState("");
   useEffect(() => {
-    firstRender() // eslint-disable-next-line
+    firstRender(); // eslint-disable-next-line
   }, [dispatch]);
 
   const firstRender = async () => {
     await dispatch(fetchingSubEvent(params.id));
     await setPayload({
       keterangan: subEvent.keterangan,
-      unit: subEvent.unit,
-      price: subEvent.price,
-      qty: subEvent.qty,
+      // unit: subEvent.unit,
+      jumlahBiaya: subEvent.jumlahBiaya,
+      // qty: subEvent.qty,
       EventId: subEvent.EventId,
     });
-    await dispatch(fetchingEvents());
-  }
+  };
 
   const editButton = () => {
+    if(payload && payload.jumlahBiaya) {
+      payload.jumlahBiaya = +(payload.jumlahBiaya)
+    }
     dispatch(editingSubEvent(payload, params.id))
       .then(({ data }) => {
         dispatch(fetchSubEvent(data.result));
@@ -53,9 +56,9 @@ export default function FormEditSubEvent() {
         });
         setPayload({
           keterangan: "",
-          unit: "",
-          price: 0,
-          qty: 0,
+          // unit: "",
+          jumlahBiaya: 0,
+          // qty: 0,
           EventId: 0,
         });
         navigate(`/event/${payload.EventId}`);
@@ -69,25 +72,50 @@ export default function FormEditSubEvent() {
       });
   };
 
+  const changeIntoMoneyFormat = (money) => {
+    let currentMoney = money;
+    return new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR",
+    }).format(currentMoney);
+  };
+
+  const changeNominalEdit = (e) => {
+    setNominalEditDisplay(changeIntoMoneyFormat(e.target.value));
+  };
+
   const inputValue = (e, key) => {
+    if (key === "jumlahBiaya") {
+      changeNominalEdit(e);
+    }
     const newPayload = { ...payload };
     newPayload[key] = e.target.value;
     setPayload(newPayload);
   };
 
+  const windowRefreshed = () => {
+    if (!subEvent.keterangan) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: `Terdeteksi website anda telah mengalami refresh(reload), silahkan klik "Substansi Penindakan" untuk membuat sub-event kembali`,
+      });
+    }
+  };
+
   return (
-    <div className="form-parent">
-      <div className="form-container">
-        <div className="text-center justify-center hero-content lg:text-left">
-          <h1 className="mb-4 mt-4 xs:mb-1 xs:mt-1 text-4xl xs:text-xl font-bold italic text-neutral-focus uppercase">
+    <div className="form-parent bg-blue-900 container-full-view">
+      <div className="form-container bg-blue-900">
+        <div className="text-center justify-center lg:text-left bg-blue-900">
+          <h1 className="mt-8 mb-8 xs:mb-1 xs:mt-1 text-4xl xs:text-xl font-bold italic text-accent uppercase bg-blue-900">
             Edit Sub-Event
           </h1>
         </div>
-        <div className="bg-base-100">
-          <div className="flex-col justify-center hero-content lg:flex-row">
+        <div className="bg-blue-900 mb-3">
+          <div className="flex-col justify-center lg:flex-row">
             <div className="card flex-shrink-0 shadow-2xl bg-base-200">
               <div className="card-body form-nya">
-                <div className="form-control mt-5">
+                <div className="form-control">
                   <label className="label">
                     <span className="font-bold">Keterangan</span>
                   </label>
@@ -105,7 +133,7 @@ export default function FormEditSubEvent() {
                     }
                   />
                 </div>
-                <div className="form-control">
+                {/* <div className="form-control">
                   <label className="label">
                     <span className="font-bold">Satuan</span>
                   </label>
@@ -122,26 +150,29 @@ export default function FormEditSubEvent() {
                         : ""
                     }
                   />
-                </div>
+                </div> */}
                 <div className="form-control">
                   <label className="label">
-                    <span className="font-bold">Price</span>
+                    <span className="font-bold">Anggaran</span>
+                    <span className="label-text font-style: italic text-gray-700">
+                      Nominal : {nominalEditDisplay}
+                    </span>
                   </label>
                   <input
                     type="number"
                     min="0"
                     className="input border-neutral-focus input-bordered "
-                    onChange={(e) => inputValue(e, "price")}
+                    onChange={(e) => inputValue(e, "jumlahBiaya")}
                     value={
-                      payload.price
-                        ? payload.price
-                        : subEvent.price
-                        ? subEvent.price
+                      payload.jumlahBiaya
+                        ? payload.jumlahBiaya
+                        : subEvent.jumlahBiaya
+                        ? subEvent.jumlahBiaya
                         : ""
                     }
                   />
                 </div>
-                <div className="form-control">
+                {/* <div className="form-control">
                   <label className="label">
                     <span className="font-bold">Volume</span>
                   </label>
@@ -158,24 +189,21 @@ export default function FormEditSubEvent() {
                         : ""
                     }
                   />
-                </div>
+                </div> */}
                 <div>
                   <label className="label">
                     <span className="label-text font-bold">Event</span>
                   </label>
-                  <select
-                    className="select select-bordered select-neutral-focus w-full max-w-lg"
-                    onChange={(e) => inputValue(e, "EventId")}
-                  >
-                    <option disabled="disabled">Choose Product Category</option>
-                    {events.map((event) => {
-                      return (
-                        <option key={event.id} value={event.id}>
-                          {event.keterangan}
-                        </option>
-                      );
-                    })}
-                  </select>
+                  <input
+                    type="text"
+                    className="input border-neutral-focus input-bordered"
+                    onChange={windowRefreshed}
+                    value={
+                      fatherKode && childKode && eventKode
+                        ? fatherKode + "-" + childKode + "-" + eventKode
+                        : ""
+                    }
+                  />
                 </div>
                 <div className="mt-5 seperate">
                   <div className="button-cancel">

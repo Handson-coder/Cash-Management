@@ -1,12 +1,12 @@
 [
     {
-        "email": "admin@gmail.com",
-        "password": "admin123",
+        "email": "penindakan@gmail.com",
+        "password": "penindakan123",
         "role": "admin"
     },
     {
-        "email": "bendahara@gmail.com",
-        "password": "bendahara123",
-        "role": "bendahara"
+        "email": "admin@gmail.com",
+        "password": "admin123",
+        "role": "admin"
     }
 ]

@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Event.hasMany(models.SubEvent, { foreignKey: "EventId" });
+      Event.belongsTo(models.ChildEvent, { foreignKey: "ChildEventId" });
       // define association here
     }
   }
@@ -38,7 +39,30 @@ module.exports = (sequelize, DataTypes) => {
           notNull: { msg: "Silahkan isi kolom jumlah biaya" },
         },
       },
-      // isFinished: DataTypes.BOOLEAN,
+      anggaranAwal: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: "Silahkan isi kolom anggaran awal" },
+          notNull: { msg: "Silahkan isi kolom anggaran awal" },
+        },
+      },
+      anggaranTerpakai: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: "Silahkan isi kolom anggaran terpakai" },
+          notNull: { msg: "Silahkan isi kolom anggaran terpakai" },
+        },
+      },
+      ChildEventId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: "Silahkan isi kolom kepala event" },
+          notNull: { msg: "Silahkan isi kolom kepala event" },
+        },
+      },
     },
     {
       sequelize,

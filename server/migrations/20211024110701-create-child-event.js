@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Events', {
+    await queryInterface.createTable('ChildEvents', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -16,10 +16,6 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
-      jumlahBiaya: {
-        allowNull: false,
-        type: Sequelize.INTEGER
-      },
       anggaranAwal: {
         allowNull: false,
         type: Sequelize.INTEGER
@@ -28,11 +24,15 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER
       },
-      ChildEventId: {
+      jumlahBiaya: {
+        allowNull: false,
+        type: Sequelize.INTEGER
+      },
+      FatherEventId: {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
-          model: "ChildEvents",
+          model: "FatherEvents",
           key: "id"
         },
         onUpdate: 'cascade',
@@ -49,6 +49,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Events');
+    await queryInterface.dropTable('ChildEvents');
   }
 };

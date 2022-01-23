@@ -10,18 +10,19 @@ export default function ProcessSubEvent() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const subEvent = useSelector((state) => state.subEvent);
-  const [qty, setQty] = useState(0);
+  const [jumlahBiaya, setJumlahBiaya] = useState(0);
+  const [nominalEditDisplay, setNominalToDisplay] = useState("");
 
   useEffect(() => {
-    firstRender() // eslint-disable-next-line
+    firstRender(); // eslint-disable-next-line
   }, [dispatch]);
 
   const firstRender = async () => {
-    await dispatch(fetchingSubEvent(params.id))
-  } 
+    await dispatch(fetchingSubEvent(params.id));
+  };
 
-  const changeQty = (e) => {
-    setQty(e.target.value);
+  const changeJumlahBiaya = (e) => {
+    setJumlahBiaya(e.target.value);
   };
 
   const executeButton = () => {
@@ -33,12 +34,14 @@ export default function ProcessSubEvent() {
       showConfirmButton: false,
       timer: 1500,
     });
-    dispatch(processSubEvent(qty, params.id))
+    dispatch(processSubEvent(jumlahBiaya, params.id))
       .then(({ data }) => {
         Swal.fire({
           position: "top-end",
           icon: "success",
-          title: `${qty} ${subEvent.unit} dari ${data.result.keterangan} ${data.message}`,
+          title: `Rp. ${jumlahBiaya.toLocaleString("id-id")} dari ${
+            data.result.keterangan
+          } ${data.message}`,
           showConfirmButton: false,
           timer: 1500,
         });
@@ -53,34 +56,44 @@ export default function ProcessSubEvent() {
       });
   };
 
+  const changeIntoMoneyFormat = (money) => {
+    let currentMoney = money;
+    return new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR",
+    }).format(currentMoney);
+  };
+
   return (
-    <div className="form-parent">
+    <div className="form-parent container-full-view">
       <div className="form-container">
         <div className="text-center justify-center hero-content lg:text-left">
-          <h1 className="mb-4 mt-4 xs:mb-1 xs:mt-1 text-4xl xs:text-xl font-bold italic text-neutral-focus uppercase">
-            Volume Yang Tersedia : {subEvent.qty ? subEvent.qty : 0}{" "}
-            {subEvent.unit ? subEvent.unit : ""}
-          </h1>
+          {subEvent && subEvent.jumlahBiaya && (
+            <h1 className="mb-4 mt-4 xs:mb-1 xs:mt-1 text-4xl xs:text-xl font-bold italic text-accent uppercase">
+              Anggaran tersisa : {changeIntoMoneyFormat(subEvent.jumlahBiaya)}
+            </h1>
+          )}
         </div>
-        <div className="bg-base-100">
+        <div className="background-color-nih">
           <div className="flex-col justify-center hero-content lg:flex-row">
             <div className="card flex-shrink-0 shadow-2xl bg-base-200">
               <div className="card-body form-nya-subEvent">
                 <div className="form-control">
                   <label className="label">
                     <span className="font-bold">
-                      Volume yang ingin digunakan = {qty}{" "}
-                      {subEvent.unit ? subEvent.unit : ""}
+                      Biaya yang ingin digunakan = {changeIntoMoneyFormat(jumlahBiaya)}
                     </span>
                   </label>
-                  <input
-                    type="number"
-                    min="0"
-                    max={subEvent.qty ? subEvent.qty : 0}
-                    className="input border-neutral-focus input-bordered "
-                    onChange={(e) => changeQty(e)}
-                    value={qty}
-                  />
+                  {subEvent && subEvent.jumlahBiaya && (
+                    <input
+                      type="number"
+                      min="0"
+                      max={subEvent.jumlahBiaya}
+                      className="input border-neutral-focus input-bordered "
+                      onChange={(e) => changeJumlahBiaya(e)}
+                      value={jumlahBiaya}
+                    />
+                  )}
                 </div>
                 <div className="mt-5 seperate">
                   <div className="button-cancel">

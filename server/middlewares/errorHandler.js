@@ -1,4 +1,5 @@
 module.exports = function (err, req, res, next) {
+  console.log(err, 'error');
   let code = err.code || 500;
   let message = "Internal Server Error";
 
@@ -23,10 +24,14 @@ module.exports = function (err, req, res, next) {
   } else if (err.name === "Data not found") {
     code = 404;
     message = "Data tidak ditemukan";
+  } else if (err.name === "gagal upload") {
+    code = 400;
+    message =
+      "Gagal upload Realisasi Anggaran, Silahkan check kembali format Excel dengan benar";
+  } else if (err.name === "Jumlah Biaya yang ingin digunakan tidak boleh lebih dari jumlah anggaran yang tersisa") {
+    code = 403;
+    message =
+      "Jumlah Biaya yang ingin digunakan tidak boleh lebih dari jumlah anggaran yang tersisa";
   }
-  // else if (err.name === 'Forbidden') {
-  //     code = 403
-  //     message = 'Forbidden'
-  // }
   res.status(code).json({ message });
 };

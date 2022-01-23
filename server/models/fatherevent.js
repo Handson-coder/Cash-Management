@@ -1,7 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Cash extends Model {
+  class FatherEvent extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -9,10 +9,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Cash.hasMany(models.FatherEvent, { foreignKey: "CashId" });
+      FatherEvent.belongsTo(models.Cash, { foreignKey: "CashId" });
+      FatherEvent.hasMany(models.ChildEvent, { foreignKey: "FatherEventId" });
     }
   }
-  Cash.init(
+  FatherEvent.init(
     {
       kode: {
         type: DataTypes.STRING,
@@ -28,14 +29,6 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notEmpty: { msg: "Silahkan isi kolom keterangan anggaran" },
           notNull: { msg: "Silahkan isi kolom keterangan anggaran" },
-        },
-      },
-      cash: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        validate: {
-          notEmpty: { msg: "Silahkan isi kolom nominal anggaran" },
-          notNull: { msg: "Silahkan isi kolom nominal anggaran" },
         },
       },
       anggaranAwal: {
@@ -54,11 +47,27 @@ module.exports = (sequelize, DataTypes) => {
           notNull: { msg: "Silahkan isi kolom anggaran terpakai" },
         },
       },
+      jumlahBiaya: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: "Silahkan isi kolom jumlah biaya" },
+          notNull: { msg: "Silahkan isi kolom jumlah biaya" },
+        },
+      },
+      CashId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: "Silahkan isi kolom relasi" },
+          notNull: { msg: "Silahkan isi kolom relasi" },
+        },
+      },
     },
     {
       sequelize,
-      modelName: "Cash",
+      modelName: "FatherEvent",
     }
   );
-  return Cash;
+  return FatherEvent;
 };

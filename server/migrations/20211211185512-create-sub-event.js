@@ -12,15 +12,23 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
-      unit: {
-        allowNull: false,
-        type: Sequelize.STRING
-      },
-      price: {
+      // unit: {
+      //   allowNull: false,
+      //   type: Sequelize.STRING
+      // },
+      // price: {
+      //   allowNull: false,
+      //   type: Sequelize.INTEGER
+      // },
+      // qty: {
+      //   allowNull: false,
+      //   type: Sequelize.INTEGER
+      // },
+      anggaranAwal: {
         allowNull: false,
         type: Sequelize.INTEGER
       },
-      qty: {
+      anggaranTerpakai: {
         allowNull: false,
         type: Sequelize.INTEGER
       },

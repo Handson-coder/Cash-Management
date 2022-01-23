@@ -1,10 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {fetchingHistories} from '../store/actions/index'
 
 export default function History() {
   const dispatch = useDispatch();
   const histories = useSelector((state) => state.histories);
+  const [classNameForFullView, setClassNameForFullView] = useState(
+    "flex flex-col mx-5 bg-blue-900 rounded-lg shadow-md pt-6 pb-6 container-full-view"
+  );
 
   useEffect(() => {
     dispatch(fetchingHistories());
@@ -15,12 +18,16 @@ export default function History() {
   }
 
   return (
-    <div className="flex flex-col mx-5 bg-neutral rounded-lg shadow-md">
-      <div className="-my-5 overflow-x-auto sm:-mx-6 lg:-mx-5">
+    <div className="flex flex-col mx-5 bg-blue-900 rounded-lg shadow-md pt-6 pb-6" className={
+      histories.length > 9
+        ? "flex flex-col mx-5 bg-blue-900 rounded-lg shadow-md pt-6 pb-6"
+        : classNameForFullView
+    }>
+      <div className="-my-5 overflow-x-hidden sm:-mx-6 lg:-mx-5">
         <div className="py-5 align-middle inline-block min-w-full sm:px-6 lg:px-5">
           <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
             <table className="min-w-full divide-y divide-gray-500 text-left">
-              <thead className="bg-accent-content">
+              <thead className="bg-base-content">
                 <tr>
                   <th
                     scope="col"

@@ -18,7 +18,7 @@ class ControllerHistory {
     const { riwayat } = req.body;
     const data = {
       riwayat,
-      UserId,
+      UserId: UserId,
     };
     try {
       const result = await History.create(data);

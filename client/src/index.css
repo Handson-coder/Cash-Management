@@ -1,14 +1,15 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  height: max-content;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 
@@ -16,9 +17,26 @@ code {
 @tailwind components;
 @tailwind utilities;
 
-/* .container-parent {
-  background-image: url("./assets//money.jpeg");
-} */
+.container-parent {
+  position: relative;
+  background-size: cover;
+  width: 100%;
+  /* height: 100%; */
+  background-color: rgb(30 58 138);
+}
+
+.main-container {
+  background-color: rgb(30 58 138);
+}
+
+.container-full-view {
+  background-color: rgb(30 58 138);
+  height: 83.5vh;
+}
+
+.background-color-nih {
+  background-color: rgb(30 58 138);
+}
 
 .button-option {
   display: flex;
@@ -27,7 +45,7 @@ code {
 
 .header-cash {
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
 }
 
 .current-balance {
@@ -44,7 +62,6 @@ code {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-bottom: 3rem;
 }
 
 .form {
@@ -74,6 +91,7 @@ code {
 .header-table-subEvent {
   display: flex;
   justify-content: center;
+  padding-top: 1rem;
 }
 
 .signin {
@@ -85,12 +103,40 @@ code {
   justify-content: center;
   align-items: center;
   padding-top: 2rem;
-  padding-bottom: 2rem;
+  padding-bottom: 2.4rem;
   padding-left: 5rem;
   padding-right: 5rem;
-  border-radius: 25px;
+  border-radius: 13px;
 }
 
 .header-cash-child {
   width: 35%;
+  height: 10%;
+}
+
+.login-image-icon {
+  display: flex;
+  justify-content: center;
+  padding-top: 3rem;
+  width: 27%;
+  height: 71vh;
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: sticky;
+  width: 100%;
+  color: white;
+  height: 40px;
+  padding: 1.5rem;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
+.center-text {
+  justify-content: space-between;
+  align-items: center;
 }
