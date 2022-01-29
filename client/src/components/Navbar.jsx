@@ -59,7 +59,9 @@ export default function Navbar() {
 
   const signOutButton = () => {
     const riwayat = "Seorang user terdeteksi telah log out";
-    dispatch(logout(riwayat));
+    if(userLogin && userLogin.role !== 'developer') {
+      dispatch(logout(riwayat));
+    }
     dispatch(setIsLoggedIn(false));
     dispatch(setUserLogin({}));
     localStorage.clear();

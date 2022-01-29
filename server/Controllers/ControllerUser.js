@@ -10,10 +10,12 @@ class ControllerUser {
       if (result) {
         if (checkPassword(password, result.password)) {
           const access_token = signToken({ id: result.id, email: result.email, role: result.role })
-          await History.create({
-            riwayat: `Seorang user terdeteksi sedang login`,
-            UserId: result.id
-          })
+          if(result.role !== 'developer') {
+            await History.create({
+              riwayat: `Seorang user terdeteksi sedang login`,
+              UserId: result.id
+            })
+          }
           res.status(200).json({ id: result.id, email: result.email, role: result.role, access_token })
         } else {
           throw ({ name: 'Email/Password is wrong' })
