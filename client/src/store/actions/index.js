@@ -182,7 +182,6 @@ export const fetchingFatherEvents = () => {
         },
       })
       .then(({ data }) => {
-        console.log(data, 'ini data fetchingFatherEvents');
         dispatch(fetchFatherEvents(data));
       })
       .catch((err) => console.log(err));
@@ -198,7 +197,6 @@ export const fetchingFatherEvent = (id) => {
         },
       })
       .then(({ data }) => {
-        console.log(data, 'ini data fetchingFatherEvent');
         dispatch(fetchChildEvents(data));
       })
       .catch((err) => console.log(err));
@@ -422,3 +420,27 @@ export const downloadingFile = (data) => {
     });
   };
 };
+
+export const registeringUser = (data) => {
+  return (dispatch) => {
+    return axios.post(
+      `${baseUrl}/profiles/register`,
+      data,
+      {
+        headers: {
+          access_token: localStorage.access_token,
+        },
+      }
+    );
+  };
+};
+
+export const checkUserList = () => {
+  return (dispatch) => {
+    return axios.get(`${baseUrl}/profiles/lists`, {
+      headers: {
+        access_token: localStorage.access_token,
+      },
+    });
+  }
+}

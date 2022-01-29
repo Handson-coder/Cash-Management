@@ -25,7 +25,6 @@ const uploadSubEvents = async (obj, next) => {
     });
     return subEvents;
   } catch (err) {
-    console.log(err, 'error di subEvents');
     next(err)
   }
 };

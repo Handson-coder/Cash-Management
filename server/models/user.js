@@ -33,14 +33,14 @@ module.exports = (sequelize, DataTypes) => {
         notNull: { msg: 'Silahkan isi kolom password' }
       }
     },
-    // role: {
-    //   type: DataTypes.STRING,
-    //   allowNull: false,
-    //   validate: {
-    //     notEmpty: { msg: 'Silahkan isi kolom role' },
-    //     notNull: { msg: 'Silahkan isi kolom role' }
-    //   }
-    // },
+    role: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: { msg: 'Silahkan isi kolom role' },
+        notNull: { msg: 'Silahkan isi kolom role' }
+      }
+    },
   }, {
     sequelize,
     modelName: 'User',

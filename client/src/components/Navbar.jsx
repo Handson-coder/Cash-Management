@@ -1,14 +1,16 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import logoIcon from "../assets/logo.jpeg";
-import { logout, setIsLoggedIn, setUserLogin } from "../store/actions";
+import { logout, setIsLoggedIn, setUserLogin, checkUserList } from "../store/actions";
 import historyIcon from "../assets/history.png";
+import Swal from "sweetalert2";
 
 export default function Navbar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.isLoggedIn);
+  const userLogin = useSelector((state) => state.userLogin);
 
   useEffect(() => {
     checkLocation(); // eslint-disable-next-line
@@ -24,9 +26,36 @@ export default function Navbar() {
         dispatch(setIsLoggedIn(false));
       } else {
         dispatch(setIsLoggedIn(true));
+        dispatch(
+          setUserLogin({
+            email: localStorage.getItem("email"),
+            role: localStorage.getItem("role"),
+            access_token: localStorage.getItem("access_token"),
+          })
+        );
       }
     }
   };
+
+  const checkUsers = () => {
+    dispatch(checkUserList())
+    .then(({data}) => {
+      let users = data.data
+      Swal.fire({
+        position: "center",
+        icon: "info",
+        title: `Users: ${JSON.stringify(users)}`,
+        showConfirmButton: true,
+      });
+    })
+    .catch((err) => {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: `${err.response.data.message}`,
+      });
+    })
+  }
 
   const signOutButton = () => {
     const riwayat = "Seorang user terdeteksi telah log out";
@@ -75,6 +104,19 @@ export default function Navbar() {
         <div className="flex items-stretch">
           {isLoggedIn ? (
             <div className="pl-5 flex">
+              {userLogin &&
+                userLogin.role === "developer" &&
+                userLogin.role !== "admin" && (
+                  <div className="pt-2">
+                    <button
+                      to="/add/event"
+                      className="btn btn-ghost btn-sm rounded-btn"
+                      onClick={() => checkUsers()}
+                    >
+                      Cek User Lists
+                    </button>
+                  </div>
+                )}
               <div className="pt-2">
                 <NavLink
                   to="/add/event"
@@ -91,6 +133,18 @@ export default function Navbar() {
                   <img src={historyIcon} alt="" />
                 </NavLink>
               </div>
+              {userLogin &&
+                userLogin.role === "developer" &&
+                userLogin.role !== "admin" && (
+                  <div className="pl-5 pt-2">
+                    <NavLink
+                      to="/developer/register"
+                      className="btn btn-ghost btn-sm rounded-btn"
+                    >
+                      Register
+                    </NavLink>
+                  </div>
+                )}
             </div>
           ) : (
             <div className="pl-5">

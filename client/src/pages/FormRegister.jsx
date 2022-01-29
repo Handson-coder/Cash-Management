@@ -1,17 +1,17 @@
 import React, { useState } from "react";
-import { editingProfile, setUserLogin } from "../store/actions";
+import { registeringUser } from "../store/actions";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import Swal from "sweetalert2";
 
-export default function FormEditProfile() {
+export default function FormRegister() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [radioButtonClicked, setRadioButtonClicked] = useState(false);
   const [payload, setPayload] = useState({
     email: "",
     password: "",
-    role: "admin"
+    role: "admin",
   });
 
   const inputValue = (e, key) => {
@@ -20,19 +20,13 @@ export default function FormEditProfile() {
     setPayload(newPayload);
   };
 
-  const editButton = () => {
-    let inputValue = payload;
-    if (inputValue.email === "") {
-      inputValue.email = localStorage.email;
-    }
-    dispatch(editingProfile(inputValue))
+  const registerButton = () => {
+    dispatch(registeringUser(payload))
       .then(({ data }) => {
-        dispatch(setUserLogin(data.user));
-        localStorage.setItem("email", data.user.email);
         Swal.fire({
           position: "top-end",
           icon: "success",
-          title: data.message,
+          title: `User ${data.email} Registered`,
           showConfirmButton: false,
           timer: 1500,
         });
@@ -79,13 +73,7 @@ export default function FormEditProfile() {
                     placeholder="Email"
                     className="input border-neutral-focus input-bordered "
                     onChange={(e) => inputValue(e, "email")}
-                    value={
-                      payload.email
-                        ? payload.email
-                        : localStorage.email
-                        ? localStorage.email
-                        : ""
-                    }
+                    value={payload.email}
                   />
                 </div>
                 <div className="form-control mt-5">
@@ -130,9 +118,9 @@ export default function FormEditProfile() {
                       type="button"
                       className="btn btn-warning rounded-xl"
                       aria-pressed="true"
-                      onClick={editButton}
+                      onClick={registerButton}
                     >
-                      Edit
+                      Register
                     </button>
                   </div>
                 </div>

@@ -32,6 +32,9 @@ module.exports = function (err, req, res, next) {
     code = 403;
     message =
       "Jumlah Biaya yang ingin digunakan tidak boleh lebih dari jumlah anggaran yang tersisa";
+  } else if (err.name === 'Forbidden') {
+    code = 404
+    message = "Developer ONLY!"
   }
   res.status(code).json({ message });
 };

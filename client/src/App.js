@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import TableSubEvents from "./pages/TableSubEvents";
 import FormAddEvent from "./pages/FormAddEvent";
+import FormRegister from "./pages/FormRegister";
 import FormEditEvent from "./pages/FormEditEvent";
 import ProcessSubEvent from "./pages/ProcessSubEvent";
 import FormEditSubEvent from "./pages/FormEditSubEvent";
@@ -30,6 +31,7 @@ export default function App() {
           <Route path="/sub-event/:id" element={<ProcessSubEvent />}></Route>
           <Route path="/edit/event/:id" element={<FormEditEvent />}></Route>
           <Route path="/event/:id" element={<TableSubEvents />}></Route>
+          <Route path="/developer/register" element={<FormRegister />}></Route>
           <Route path="/add/event" element={<FormAddEvent />}></Route>
           <Route path="/profile/edit" element={<FormEditProfile />}></Route>
           <Route path="/history" element={<History />}></Route>
