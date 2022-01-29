@@ -31,6 +31,18 @@ export default function FormEditEvent() {
     });
   };
 
+  const changeIntoMoneyFormat = (money) => {
+    let currentMoney = money;
+    return new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR",
+    }).format(currentMoney);
+  };
+
+  const changeNominalEdit = (e) => {
+    setNominalEditDisplay(changeIntoMoneyFormat(e.target.value));
+  };
+
   const editButton = () => {
     Swal.fire({
       position: "top-end",
@@ -65,6 +77,9 @@ export default function FormEditEvent() {
   };
 
   const inputValue = (e, key) => {
+    if (key === "anggaranAwal") {
+      changeNominalEdit(e);
+    }
     const newPayload = { ...payload };
     newPayload[key] = e.target.value;
     setPayload(newPayload);

@@ -17,9 +17,8 @@ export default function TableEvents({ uploadStatus }) {
   const events = useSelector((state) => state.events);
   const [finishFetching, setFinishFetching] = useState(false);
   const [finishProcessEvent, setFinishProcessEvent] = useState(false);
-  const [classNameForFullView, setClassNameForFullView] = useState(
-    "flex flex-col mx-5 bg-neutral rounded-lg shadow-md container-full-view"
-  );
+
+  const classNameForFullView = "flex flex-col mx-5 bg-neutral rounded-lg shadow-md container-full-view"
 
   useEffect(() => {
     dispatch(fetchingEvents());

@@ -14,8 +14,7 @@ export default function FormAddEvent() {
   const fatherEvents = useSelector((state) => state.fatherEvents);
   const childEvents = useSelector((state) => state.childEvents);
   const [nominalEditDisplay, setNominalEditDisplay] = useState("");
-  const [classNameForFullView, setClassNameForFullView] =
-    useState("form-parent");
+  const classNameForFullView = "form-parent";
   const [payload, setPayload] = useState({
     kode: "",
     keterangan: "",
@@ -27,7 +26,6 @@ export default function FormAddEvent() {
   if (payload.FatherEventId !== 0) {
     dispatch(fetchingFatherEvent(payload.FatherEventId));
     setPayload({
-      FatherEventId: 0,
       kode: "",
       keterangan: "",
       anggaranAwal: 0,

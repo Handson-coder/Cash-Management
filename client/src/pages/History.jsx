@@ -1,28 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {fetchingHistories} from '../store/actions/index'
+import { fetchingHistories } from "../store/actions/index";
 
 export default function History() {
   const dispatch = useDispatch();
   const histories = useSelector((state) => state.histories);
-  const [classNameForFullView, setClassNameForFullView] = useState(
-    "flex flex-col mx-5 bg-blue-900 rounded-lg shadow-md pt-6 pb-6 container-full-view"
-  );
+  const classNameForFullView =
+    "flex flex-col mx-5 bg-blue-900 rounded-lg shadow-md pt-6 pb-6 container-full-view";
 
   useEffect(() => {
     dispatch(fetchingHistories());
   }, [dispatch]);
 
   const dateFormater = (tanggal) => {
-    return new Date(tanggal).toLocaleString()
-  }
+    return new Date(tanggal).toLocaleString();
+  };
 
   return (
-    <div className="flex flex-col mx-5 bg-blue-900 rounded-lg shadow-md pt-6 pb-6" className={
-      histories.length > 9
-        ? "flex flex-col mx-5 bg-blue-900 rounded-lg shadow-md pt-6 pb-6"
-        : classNameForFullView
-    }>
+    <div
+      className={
+        histories.length > 9
+          ? "flex flex-col mx-5 bg-blue-900 rounded-lg shadow-md pt-6 pb-6"
+          : classNameForFullView
+      }
+    >
       <div className="-my-5 overflow-x-hidden sm:-mx-6 lg:-mx-5">
         <div className="py-5 align-middle inline-block min-w-full sm:px-6 lg:px-5">
           <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
@@ -66,9 +67,7 @@ export default function History() {
                         <div className="text-sm">{history.riwayat}</div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm">
-                          {history.User.email}
-                        </div>
+                        <div className="text-sm">{history.User.email}</div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm">

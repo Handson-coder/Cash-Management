@@ -11,7 +11,6 @@ export default function ProcessSubEvent() {
   const dispatch = useDispatch();
   const subEvent = useSelector((state) => state.subEvent);
   const [jumlahBiaya, setJumlahBiaya] = useState(0);
-  const [nominalEditDisplay, setNominalToDisplay] = useState("");
 
   useEffect(() => {
     firstRender(); // eslint-disable-next-line

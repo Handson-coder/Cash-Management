@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { editingProfile, setUserLogin } from "../store/actions";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import Swal from "sweetalert2";
 
 export default function FormEditProfile() {

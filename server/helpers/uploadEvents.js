@@ -1,7 +1,6 @@
 const { Event, Cash, FatherEvent, ChildEvent } = require("../models");
 
 const uploadEvents = async (data, next) => {
-  console.log(data, "data di uploadEvent.js");
   let obj = {
     cash: 0,
     datas: [],

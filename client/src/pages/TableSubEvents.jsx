@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -21,9 +21,8 @@ export default function TableSubEvents() {
   const eventForTableSubEvent = useSelector(
     (state) => state.eventForTableSubEvent
   );
-  const [classNameForFullView, setClassNameForFullView] = useState(
-    "container-full-view mx-5"
-  );
+
+  const classNameForFullView = "container-full-view mx-5"
 
   useEffect(() => {
     dispatch(fetchingEvent(params.id));
@@ -53,7 +52,6 @@ export default function TableSubEvents() {
 
   return (
     <div
-      className=""
       className={subEvents.length > 4 ? "pb-7 mx-5" : classNameForFullView}
     >
       <div className="header-table-subEvent">

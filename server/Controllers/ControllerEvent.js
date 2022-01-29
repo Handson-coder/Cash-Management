@@ -299,7 +299,6 @@ class ControllerEvent {
     const data = req.body;
     try {
       const cash = await Cash.findAll();
-      console.log(cash, "cash");
       const histories = await History.findAll({
         order: [["id", "DESC"]],
         include: { model: User },

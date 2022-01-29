@@ -21,10 +21,8 @@ export default function FormAddSubEvent() {
     EventId: 0,
   });
   useEffect(() => {
-    dispatch(fetchingEvent(params.id));
+    dispatch(fetchingEvent(params.id)); // eslint-disable-next-line
   }, [dispatch]);
-
-  console.log(payload);
 
   const createButton = () => {
     if (
