@@ -9,11 +9,15 @@ export default function FormEditEvent() {
   const params = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const eventForEditEventPage = useSelector((state) => state.eventForEditEventPage);
+  const eventForEditEventPage = useSelector(
+    (state) => state.eventForEditEventPage
+  );
   const [payload, setPayload] = useState({
     kode: "",
     keterangan: "",
+    anggaranAwal: 0,
   });
+  const [nominalEditDisplay, setNominalEditDisplay] = useState("");
   useEffect(() => {
     firstRender(); // eslint-disable-next-line
   }, [dispatch]);
@@ -23,6 +27,7 @@ export default function FormEditEvent() {
     await setPayload({
       kode: eventForEditEventPage.kode,
       keterangan: eventForEditEventPage.keterangan,
+      anggaranAwal: eventForEditEventPage.anggaranAwal,
     });
   };
 
@@ -87,11 +92,15 @@ export default function FormEditEvent() {
                     className="input border-neutral-focus input-bordered "
                     onChange={(e) => inputValue(e, "kode")}
                     value={
-                      payload.kode ? payload.kode : eventForEditEventPage.kode ? eventForEditEventPage.kode : ""
+                      payload.kode
+                        ? payload.kode
+                        : eventForEditEventPage.kode
+                        ? eventForEditEventPage.kode
+                        : ""
                     }
                   />
                 </div>
-                <div className="form-control mt-5">
+                <div className="form-control">
                   <label className="label">
                     <span className="font-bold">Keterangan</span>
                   </label>
@@ -106,6 +115,28 @@ export default function FormEditEvent() {
                         : eventForEditEventPage.keterangan
                         ? eventForEditEventPage.keterangan
                         : ""
+                    }
+                  />
+                </div>
+                <div className="form-control">
+                  <label className="label">
+                    <span className="font-bold">Anggaran Awal</span>
+                    <span className="label-text font-style: italic text-gray-700">
+                      Nominal : {nominalEditDisplay}
+                    </span>
+                  </label>
+                  <input
+                    type="number"
+                    placeholder="Anggaran Awal"
+                    className="input border-neutral-focus input-bordered"
+                    min="0"
+                    onChange={(e) => inputValue(e, "anggaranAwal")}
+                    value={
+                      payload.anggaranAwal
+                        ? payload.anggaranAwal
+                        : eventForEditEventPage.anggaranAwal
+                        ? eventForEditEventPage.anggaranAwal
+                        : 0
                     }
                   />
                 </div>

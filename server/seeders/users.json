@@ -1,17 +1,17 @@
 [
     {
-        "email": "penindakan@gmail.com",
+        "email": "penindakan1@gmail.com",
         "password": "penindakan123",
         "role": "admin"
     },
     {
-        "email": "admin@gmail.com",
-        "password": "admin123",
+        "email": "penindakan2@gmail.com",
+        "password": "penindakan123",
         "role": "admin"
     },
     {
-        "email": "hansenpanggabean8@gmail.com",
-        "password": "Sebelasjuni1997",
+        "email": "developer@gmail.com",
+        "password": "developer123",
         "role": "developer"
-   }
+    }
 ]

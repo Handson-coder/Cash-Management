@@ -120,7 +120,11 @@ class ControllerEvent {
         throw { name: "Data not found" };
       }
       await History.create({
-        riwayat: `Event '${result.keterangan}' telah berhasil dibuat dengan anggaran awal Rp ${changeIntoMoneyFormat(result.anggaranAwal)}`,
+        riwayat: `Event '${
+          result.keterangan
+        }' telah berhasil dibuat dengan anggaran awal Rp ${changeIntoMoneyFormat(
+          result.anggaranAwal
+        )}`,
         UserId: +UserId,
       });
       res.status(201).json(result);
@@ -223,20 +227,58 @@ class ControllerEvent {
 
   static async editEvent(req, res, next) {
     const { id } = req.params;
-    const { kode, keterangan } = req.body;
+    const { kode, keterangan, anggaranAwal } = req.body;
     const UserId = req.user.id;
     try {
-      const foundEvent = await Event.findByPk(id);
-      const data = {
+      const foundEvent = await Event.findOne({
+        where: { id },
+        include: {
+          model: ChildEvent,
+          include: {
+            model: FatherEvent,
+            include: {
+              model: Cash,
+            },
+          },
+        },
+      });
+      const childEvent = foundEvent.ChildEvent;
+      const fatherEvent = childEvent.FatherEvent;
+      const cash = fatherEvent.Cash;
+      const dataEvent = {
         kode,
         keterangan,
         jumlahBiaya: foundEvent.jumlahBiaya,
-        anggaranAwal: foundEvent.anggaranAwal,
+        anggaranAwal: +anggaranAwal,
         anggaranTerpakai: foundEvent.anggaranTerpakai,
         ChildEventId: foundEvent.ChildEventId,
       };
+      const dataChildEvent = {
+        anggaranAwal:
+          childEvent.anggaranAwal - foundEvent.anggaranAwal + +anggaranAwal,
+      };
+      const dataFatherEvent = {
+        anggaranAwal:
+          fatherEvent.anggaranAwal - foundEvent.anggaranAwal + +anggaranAwal,
+      };
+      const dataCash = {
+        anggaranAwal:
+          cash.anggaranAwal - foundEvent.anggaranAwal + +anggaranAwal,
+      };
       if (foundEvent) {
-        const result = await Event.update(data, {
+        await Cash.update(dataCash, {
+          where: { id: cash.id },
+          returning: true,
+        });
+        await FatherEvent.update(dataFatherEvent, {
+          where: { id: fatherEvent.id },
+          returning: true,
+        });
+        await ChildEvent.update(dataChildEvent, {
+          where: { id: childEvent.id },
+          returning: true,
+        });
+        const result = await Event.update(dataEvent, {
           where: { id: foundEvent.id },
           returning: true,
         });
@@ -254,11 +296,10 @@ class ControllerEvent {
   }
 
   static async uploadEvents(req, res, next) {
-    console.log(req.body, 'Body');
     const data = req.body;
     try {
       const cash = await Cash.findAll();
-      console.log(cash, 'cash');
+      console.log(cash, "cash");
       const histories = await History.findAll({
         order: [["id", "DESC"]],
         include: { model: User },
@@ -376,11 +417,15 @@ class ControllerEvent {
         );
       }
       const fatherEvents = await FatherEvent.findAll({
+        order: [["id", "ASC"]],
         include: {
+          order: [["id", "ASC"]],
           model: ChildEvent,
           include: {
+            order: [["id", "ASC"]],
             model: Event,
             include: {
+              order: [["id", "ASC"]],
               model: SubEvent,
             },
           },

@@ -343,7 +343,7 @@ class ControllerSubEvent {
   }
 
   static async createSubEvent(req, res, next) {
-    const { keterangan, jumlahBiaya, unit, price, qty, EventId } = req.body;
+    const { keterangan, jumlahBiaya, EventId } = req.body;
     const UserId = req.user.id;
     try {
       // let jumlahBiaya = 0;
@@ -376,19 +376,15 @@ class ControllerSubEvent {
       const fatherEvent = childEvent.FatherEvent;
       const cash = fatherEvent.Cash;
       let dataCash = {
-        anggaranAwal: cash.anggaranAwal + jumlahBiaya,
         cash: cash.cash + jumlahBiaya,
       };
       let dataFatherEvent = {
-        anggaranAwal: fatherEvent.anggaranAwal + jumlahBiaya,
         jumlahBiaya: fatherEvent.jumlahBiaya + jumlahBiaya,
       };
       let dataChildEvent = {
-        anggaranAwal: childEvent.anggaranAwal + jumlahBiaya,
         jumlahBiaya: childEvent.jumlahBiaya + jumlahBiaya,
       };
       let dataEvent = {
-        anggaranAwal: event.anggaranAwal + jumlahBiaya,
         jumlahBiaya: event.jumlahBiaya + jumlahBiaya,
       };
       if (cash) {

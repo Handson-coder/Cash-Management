@@ -47,7 +47,6 @@ export default function FormAddEvent() {
       currency: "IDR",
     }).format(currentMoney);
   };
-  console.log(payload, "payload");
   const changeNominalEdit = (e) => {
     setNominalEditDisplay(changeIntoMoneyFormat(e.target.value));
   };
@@ -184,6 +183,7 @@ export default function FormAddEvent() {
                         placeholder="Keterangan"
                         className="input border-neutral-focus input-bordered"
                         onChange={(e) => inputValue(e, "keterangan")}
+                        min="0"
                         value={payload.keterangan}
                       />
                     </div>

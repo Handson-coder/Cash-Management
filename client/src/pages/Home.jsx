@@ -130,11 +130,11 @@ export default function Home() {
   return (
     <div className="full-view">
       <div className="pb-4 pt-4 header-cash">
-        <div className="pt-11 pb-11 text-sm font-mono">
+        <div hidden className="pt-11 pb-11 text-sm font-mono">
           <label className="w-64 h-11 flex flex-col items-center px-1 py-2 bg-accent rounded-md shadow-md tracking-wide uppercase border border-blue cursor-pointer hover:bg-accent-focus hover:text-blue-900 bg-accent text-black ease-linear transition-all duration-150">
             <i className="fas fa-cloud-upload-alt fa-3x"></i>
             <span className="pt-1 text-center leading-normal">
-              Upload Realisasi Anggaran
+              Upload DIPA
             </span>
             <input
               type="file"
@@ -143,6 +143,7 @@ export default function Home() {
             />
           </label>
         </div>
+        {/* sementara di hide dlu */}
         <div className="header-cash-child bg-base-200 pt-3 pb-3 border-double border-4 border-black rounded-lg">
           <div className="current-balance">
             <div>
@@ -152,112 +153,6 @@ export default function Home() {
               </div>
             </div>
           </div>
-          {/* <div className="flex button-option">
-            <div>
-              <button
-                className="btn bg-base-100 hover:bg-base-300"
-                onClick={() => setOpenModalEditCash(true)}
-              >
-                <img src={editIcon} alt="" />
-              </button>
-            </div>
-            <div>
-              <button
-                className="btn bg-base-100 hover:bg-base-300"
-                onClick={() => setOpenModalAddCash(true)}
-              >
-                <img src={addIcon} alt="" />
-              </button>
-            </div>
-          </div> */}
-          {/* {openModalEditCash === true ? (
-            <div className="form-control pt-5 pl-4 pr-4">
-              <label className="label">
-                <span className="label-text font-style: italic text-gray-700">
-                  Nominal to Edit : {nominalEditDisplay}
-                </span>
-              </label>
-              <div className="flex space-x-2">
-                <input
-                  type="number"
-                  min="0"
-                  className="w-full input input-success input-bordered"
-                  onChange={(e) => changeNominalEdit(e)}
-                  value={nominalToEditCash}
-                />
-                <button
-                  className="btn bg-base-100 hover:bg-base-300"
-                  onClick={() => editCash()}
-                >
-                  <img src={confirmIcon} alt="" className="w-6" />
-                </button>
-                <button
-                  className="btn bg-base-100 hover:bg-base-300 text-black"
-                  onClick={() => closeModalEdit()}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    className="inline-block w-6 h-6 stroke-current"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M6 18L18 6M6 6l12 12"
-                    ></path>
-                  </svg>
-                </button>
-              </div>
-            </div>
-          ) : (
-            <div></div>
-          )} */}
-          {/* {openModalAddCash === true ? (
-            <div className="form-control pt-5 pl-4 pr-4">
-              <label className="label">
-                <span className="label-text font-style: italic text-gray-700">
-                  Nominal to Add : {nominalAddDisplay}
-                </span>
-              </label>
-              <div className="flex space-x-2">
-                <input
-                  type="number"
-                  min="0"
-                  className="w-full input input-success input-bordered"
-                  onChange={(e) => changeNominalAdd(e)}
-                  value={nominalToAddCash}
-                />
-                <button
-                  className="btn bg-base-100 hover:bg-base-300"
-                  onClick={() => addCash()}
-                >
-                  <img src={confirmIcon} alt="" className="w-6" />
-                </button>
-                <button
-                  className="btn bg-base-100 text-black hover:bg-base-300"
-                  onClick={() => closeModalAdd()}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    className="inline-block w-6 h-6 stroke-current"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M6 18L18 6M6 6l12 12"
-                    ></path>
-                  </svg>
-                </button>
-              </div>
-            </div>
-          ) : (
-            <div></div>
-          )} */}
         </div>
         <div className="font-mono pt-11 pb-11">
           <button
