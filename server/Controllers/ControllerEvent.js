@@ -416,16 +416,16 @@ class ControllerEvent {
         );
       }
       const fatherEvents = await FatherEvent.findAll({
-        order: [["id", "ASC"]],
+        // order: [["id", "ASC"]],
         include: {
-          order: [["id", "ASC"]],
           model: ChildEvent,
+          // order: [["kode", "ASC"]],
           include: {
-            order: [["id", "ASC"]],
             model: Event,
+            // order: [["id", "ASC"]],
             include: {
-              order: [["id", "ASC"]],
               model: SubEvent,
+              // order: [["id", "ASC"]],
             },
           },
         },

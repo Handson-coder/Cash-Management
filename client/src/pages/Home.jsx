@@ -131,6 +131,7 @@ export default function Home() {
     <div className="full-view">
       <div className="pb-4 pt-4 header-cash">
         <div className="pt-11 pb-11 text-sm font-mono">
+        {/* sementara di hide dlu */}
           <label className="w-64 h-11 flex flex-col items-center px-1 py-2 bg-accent rounded-md shadow-md tracking-wide uppercase border border-blue cursor-pointer hover:bg-accent-focus hover:text-blue-900 bg-accent text-black ease-linear transition-all duration-150">
             <i className="fas fa-cloud-upload-alt fa-3x"></i>
             <span className="pt-1 text-center leading-normal">
@@ -143,7 +144,6 @@ export default function Home() {
             />
           </label>
         </div>
-        {/* sementara di hide dlu */}
         <div className="header-cash-child bg-base-200 pt-3 pb-3 border-double border-4 border-black rounded-lg">
           <div className="current-balance">
             <div>
