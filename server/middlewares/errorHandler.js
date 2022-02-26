@@ -34,6 +34,9 @@ module.exports = function (err, req, res, next) {
   } else if (err.name === 'Forbidden') {
     code = 404
     message = "Developer ONLY!"
+  } else if (err.name === 'Jumlah biaya tidak boleh kurang dari 0') {
+    code = 404
+    message = "Jumlah biaya tidak boleh kurang dari 0"
   }
   res.status(code).json({ message });
 };

@@ -33,7 +33,8 @@ export default function ProcessSubEvent() {
       showConfirmButton: false,
       timer: 1500,
     });
-    dispatch(processSubEvent(jumlahBiaya, params.id))
+    if(Number(jumlahBiaya) > 0) {
+      dispatch(processSubEvent(jumlahBiaya, params.id))
       .then(({ data }) => {
         Swal.fire({
           position: "top-end",
@@ -53,6 +54,13 @@ export default function ProcessSubEvent() {
           text: `${err.response.data.message}`,
         });
       });
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: `Jumlah biaya tidak boleh kurang dari 0`,
+      });
+    }
   };
 
   const changeIntoMoneyFormat = (money) => {

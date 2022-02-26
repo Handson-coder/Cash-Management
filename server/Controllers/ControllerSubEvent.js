@@ -60,86 +60,92 @@ class ControllerSubEvent {
       let jumlahBiayaFatherEventSetelahDigunakan = 0;
       let jumlahBiayaChildEventSetelahDigunakan = 0;
       let jumlahBiayaSubEventSetelahDigunakan = 0;
-      const subEvent = await SubEvent.findByPk(id, {
-        include: {
-          model: Event,
+      if(jumlahBiayaFE > 0) {
+        const subEvent = await SubEvent.findByPk(id, {
           include: {
-            model: ChildEvent,
+            model: Event,
             include: {
-              model: FatherEvent,
+              model: ChildEvent,
               include: {
-                model: Cash,
+                model: FatherEvent,
+                include: {
+                  model: Cash,
+                },
               },
             },
           },
-        },
-      });
-      const event = subEvent.Event;
-      const childEvent = event.ChildEvent;
-      const fatherEvent = childEvent.FatherEvent;
-      const cash = fatherEvent.Cash;
-      if (jumlahBiayaFE <= subEvent.jumlahBiaya) {
-        jumlahBiayaCashSetelahDigunakan = cash.cash - jumlahBiayaFE;
-        jumlahBiayaFatherEventSetelahDigunakan =
-          fatherEvent.jumlahBiaya - jumlahBiayaFE;
-        jumlahBiayaChildEventSetelahDigunakan =
-          childEvent.jumlahBiaya - jumlahBiayaFE;
-        jumlahBiayaEventSetelahDigunakan = event.jumlahBiaya - jumlahBiayaFE;
-        jumlahBiayaSubEventSetelahDigunakan =
-          subEvent.jumlahBiaya - jumlahBiayaFE;
-        let dataCash = {
-          cash: jumlahBiayaCashSetelahDigunakan,
-          anggaranTerpakai: cash.anggaranTerpakai + jumlahBiayaFE,
-        };
-        let dataFatherEvent = {
-          jumlahBiaya: jumlahBiayaFatherEventSetelahDigunakan,
-          anggaranTerpakai: fatherEvent.anggaranTerpakai + jumlahBiayaFE,
-        };
-        let dataChildEvent = {
-          jumlahBiaya: jumlahBiayaChildEventSetelahDigunakan,
-          anggaranTerpakai: childEvent.anggaranTerpakai + jumlahBiayaFE,
-        };
-        let dataEvent = {
-          jumlahBiaya: jumlahBiayaEventSetelahDigunakan,
-          anggaranTerpakai: event.anggaranTerpakai + jumlahBiayaFE,
-        };
-        let dataSubEvent = {
-          jumlahBiaya: jumlahBiayaSubEventSetelahDigunakan,
-          anggaranTerpakai: jumlahBiayaFE,
-        };
-        await Cash.update(dataCash, {
-          where: { id: cash.id },
-          returning: true,
         });
-        await FatherEvent.update(dataFatherEvent, {
-          where: { id: fatherEvent.id },
-          returning: true,
-        });
-        await ChildEvent.update(dataChildEvent, {
-          where: { id: childEvent.id },
-          returning: true,
-        });
-        await Event.update(dataEvent, {
-          where: { id: subEvent.EventId },
-          returning: true,
-        });
-        const result = await SubEvent.update(dataSubEvent, {
-          where: { id },
-          returning: true,
-        });
-        await History.create({
-          riwayat: `Rp ${changeIntoMoneyFormat(jumlahBiayaFE)} telah digunakan dari ${
-            subEvent.keterangan
-          }`,
-          UserId: +UserId,
-        });
-        res.status(200).json({
-          result: result[1][0],
-          message: `telah berhasil digunakan`,
-        });
+        const event = subEvent.Event;
+        const childEvent = event.ChildEvent;
+        const fatherEvent = childEvent.FatherEvent;
+        const cash = fatherEvent.Cash;
+        if (jumlahBiayaFE <= subEvent.jumlahBiaya) {
+          jumlahBiayaCashSetelahDigunakan = cash.cash - jumlahBiayaFE;
+          jumlahBiayaFatherEventSetelahDigunakan =
+            fatherEvent.jumlahBiaya - jumlahBiayaFE;
+          jumlahBiayaChildEventSetelahDigunakan =
+            childEvent.jumlahBiaya - jumlahBiayaFE;
+          jumlahBiayaEventSetelahDigunakan = event.jumlahBiaya - jumlahBiayaFE;
+          jumlahBiayaSubEventSetelahDigunakan =
+            subEvent.jumlahBiaya - jumlahBiayaFE;
+          let dataCash = {
+            cash: jumlahBiayaCashSetelahDigunakan,
+            anggaranTerpakai: cash.anggaranTerpakai + jumlahBiayaFE,
+          };
+          let dataFatherEvent = {
+            jumlahBiaya: jumlahBiayaFatherEventSetelahDigunakan,
+            anggaranTerpakai: fatherEvent.anggaranTerpakai + jumlahBiayaFE,
+          };
+          let dataChildEvent = {
+            jumlahBiaya: jumlahBiayaChildEventSetelahDigunakan,
+            anggaranTerpakai: childEvent.anggaranTerpakai + jumlahBiayaFE,
+          };
+          let dataEvent = {
+            jumlahBiaya: jumlahBiayaEventSetelahDigunakan,
+            anggaranTerpakai: event.anggaranTerpakai + jumlahBiayaFE,
+          };
+          let dataSubEvent = {
+            jumlahBiaya: jumlahBiayaSubEventSetelahDigunakan,
+            anggaranTerpakai: jumlahBiayaFE,
+          };
+          await Cash.update(dataCash, {
+            where: { id: cash.id },
+            returning: true,
+          });
+          await FatherEvent.update(dataFatherEvent, {
+            where: { id: fatherEvent.id },
+            returning: true,
+          });
+          await ChildEvent.update(dataChildEvent, {
+            where: { id: childEvent.id },
+            returning: true,
+          });
+          await Event.update(dataEvent, {
+            where: { id: subEvent.EventId },
+            returning: true,
+          });
+          const result = await SubEvent.update(dataSubEvent, {
+            where: { id },
+            returning: true,
+          });
+          await History.create({
+            riwayat: `Rp ${changeIntoMoneyFormat(jumlahBiayaFE)} telah digunakan dari ${
+              subEvent.keterangan
+            }`,
+            UserId: +UserId,
+          });
+          res.status(200).json({
+            result: result[1][0],
+            message: `telah berhasil digunakan`,
+          });
+        } else {
+          throw {
+            name: "Jumlah Biaya yang ingin digunakan tidak boleh lebih dari jumlah anggaran yang tersisa",
+          };
+        }
       } else {
         throw {
-          name: "Jumlah Biaya yang ingin digunakan tidak boleh lebih dari jumlah anggaran yang tersisa",
+          name: "Jumlah biaya tidak boleh kurang dari 0",
         };
       }
     } catch (err) {
