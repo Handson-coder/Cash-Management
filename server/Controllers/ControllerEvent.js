@@ -122,7 +122,7 @@ class ControllerEvent {
       await History.create({
         riwayat: `Event '${
           result.keterangan
-        }' telah berhasil dibuat dengan anggaran awal Rp ${changeIntoMoneyFormat(
+        }' berhasil dibuat dengan anggaran awal Rp ${changeIntoMoneyFormat(
           result.anggaranAwal
         )}`,
         UserId: +UserId,
@@ -186,12 +186,12 @@ class ControllerEvent {
           });
           await Event.destroy({ where: { id } });
           await History.create({
-            riwayat: `Event '${foundEvent.keterangan}' beserta subEvent-nya telah berhasil di hapus`,
+            riwayat: `Event '${foundEvent.keterangan}' beserta subEvent-nya berhasil di hapus`,
             UserId: +UserId,
           });
           res.status(200).json({
             id: +id,
-            message: `Event '${foundEvent.keterangan}' beserta subEvent-nya telah berhasil di hapus`,
+            message: `Event '${foundEvent.keterangan}' beserta subEvent-nya berhasil di hapus`,
           });
         } else {
           await Cash.update(dataCash, {
@@ -283,7 +283,7 @@ class ControllerEvent {
           returning: true,
         });
         await History.create({
-          riwayat: `Event dengan kode: ${foundEvent.kode} & keterangan: ${foundEvent.keterangan} telah berhasil di edit`,
+          riwayat: `Event dengan kode: ${foundEvent.kode} & keterangan: ${foundEvent.keterangan} berhasil di edit`,
           UserId: +UserId,
         });
         res.status(200).json(result[1][0]);

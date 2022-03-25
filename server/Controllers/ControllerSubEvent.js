@@ -129,14 +129,14 @@ class ControllerSubEvent {
             returning: true,
           });
           await History.create({
-            riwayat: `Rp ${changeIntoMoneyFormat(jumlahBiayaFE)} telah digunakan dari ${
+            riwayat: `Rp ${changeIntoMoneyFormat(jumlahBiayaFE)} digunakan dari ${
               subEvent.keterangan
             }`,
             UserId: +UserId,
           });
           res.status(200).json({
             result: result[1][0],
-            message: `telah berhasil digunakan`,
+            message: `berhasil digunakan`,
           });
         } else {
           throw {
@@ -231,7 +231,7 @@ class ControllerSubEvent {
         });
         res.status(200).json({
           id: subEvent.id,
-          message: `Sub Event '${subEvent.keterangan}' telah berhasil dihapus`,
+          message: `Sub Event '${subEvent.keterangan}' berhasil dihapus`,
         });
       } else {
         throw { name: "Data not found" };
@@ -333,12 +333,12 @@ class ControllerSubEvent {
       });
       if (result) {
         await History.create({
-          riwayat: `Sub Event dengan keterangan '${subEvent.keterangan}' telah berhasil di update`,
+          riwayat: `Sub Event dengan keterangan '${subEvent.keterangan}' berhasil di update`,
           UserId: +UserId,
         });
         res.status(200).json({
           result: result[1][0],
-          message: `Sub Event '${subEvent.keterangan}' telah berhasil di update`,
+          message: `Sub Event '${subEvent.keterangan}' berhasil di update`,
         });
       } else {
         throw { name: "Data not found" };
@@ -427,12 +427,12 @@ class ControllerSubEvent {
       }
       const result = await SubEvent.create(data);
       await History.create({
-        riwayat: `Sub Event '${result.keterangan}' telah berhasil ditambahkan ke Event '${event.keterangan}'`,
+        riwayat: `Sub Event '${result.keterangan}' berhasil ditambahkan ke Event '${event.keterangan}'`,
         UserId: +UserId,
       });
       res.status(201).json({
         result,
-        message: `Sub Event '${result.keterangan}' telah berhasil ditambahkan ke Event '${event.keterangan}'`,
+        message: `Sub Event '${result.keterangan}' berhasil ditambahkan ke Event '${event.keterangan}'`,
       });
     } catch (err) {
       next(err);

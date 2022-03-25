@@ -17,11 +17,11 @@ class ControllerProfile {
       });
       if (result[1][0]) {
         await History.create({
-          riwayat: `Profile anda telah berhasil di edit`,
+          riwayat: `Profile anda berhasil di edit`,
           UserId: id,
         });
         res.status(200).json({
-          message: `Profile anda telah berhasil di edit`,
+          message: `Profile anda berhasil di edit`,
           user: {
             id: result[1][0].id,
             email: result[1][0].email,
