@@ -106,7 +106,7 @@ class ControllerSubEvent {
           };
           let dataSubEvent = {
             jumlahBiaya: jumlahBiayaSubEventSetelahDigunakan,
-            anggaranTerpakai: jumlahBiayaFE,
+            anggaranTerpakai: subEvent.anggaranTerpakai + jumlahBiayaFE,
           };
           await Cash.update(dataCash, {
             where: { id: cash.id },

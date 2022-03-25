@@ -1,10 +1,6 @@
 const { Event, Cash, FatherEvent, ChildEvent } = require("../models");
 
 const uploadEvents = async (data, next) => {
-  let obj = {
-    cash: 0,
-    datas: [],
-  };
   let cashCreated;
   let eventCreated;
   let fatherEventCreated;
@@ -25,8 +21,24 @@ const uploadEvents = async (data, next) => {
   //     return false;
   //   }
   // }
+  let obj = {
+    cash: 0,
+    datas: [],
+  };
   try {
-    for (let i = 0; i < data.length; i++) {
+    if(data[1][0].includes("U15")) {
+      cashCreated = await Cash.create({
+        kode: data[1][0],
+        keterangan: data[1][1],
+        cash: data[1][4],
+        anggaranAwal: data[1][4],
+        anggaranTerpakai: 0,
+      });
+      obj.cash = cashCreated.cash;
+      cashId = cashCreated.id;
+    }
+    let newData = data.slice(2)
+    for (let i = 0; i < newData.length; i++) {
       let dataEvent = {
         kode: "",
         keterangan: "",
@@ -36,117 +48,101 @@ const uploadEvents = async (data, next) => {
         anggaranTerpakai: 0,
       };
       if (
-        data[i] === data[0] &&
-        data[i].Kode &&
-        data[i].Kode.includes("U15") &&
-        !data[i].Volume &&
-        !data[i]["Harga Satuan"]
+        newData[i][0] !== null &&
+        isNaN(Number(newData[i][0])) === false &&
+        !newData[i][2] &&
+        !newData[i][3] &&
+        !newData[i][5]
       ) {
-        cashCreated = await Cash.create({
-          kode: data[i].Kode,
-          keterangan: data[i].Keterangan,
-          cash: data[i].Jumlah,
-          anggaranAwal: data[i].Jumlah,
+        fatherEventCreated = await FatherEvent.create({
+          kode: newData[i][0],
+          keterangan: newData[i][1],
+          jumlahBiaya: newData[i][4],
+          anggaranAwal: newData[i][4],
           anggaranTerpakai: 0,
+          CashId: cashId,
         });
-        obj.cash = cashCreated.cash;
-        cashId = cashCreated.id;
+        fatherEventId = fatherEventCreated.id;
       } else {
         if (
-          isNaN(Number(data[i].Kode)) === false &&
-          !data[i].__EMPTY &&
-          !data[i].Volume &&
-          !data[i]["Harga Satuan"]
+          newData[i][0] !== null &&
+          newData[i].length > 0 &&
+          isNaN(Number(newData[i][0])) &&
+          !newData[i][2] &&
+          !newData[i][3] &&
+          !newData[i][5]
         ) {
-          fatherEventCreated = await FatherEvent.create({
-            kode: data[i].Kode,
-            keterangan: data[i].Keterangan,
-            jumlahBiaya: data[i].Jumlah,
-            anggaranAwal: data[i].Jumlah,
+          childEventCreated = await ChildEvent.create({
+            kode: newData[i][0],
+            keterangan: newData[i][1],
+            jumlahBiaya: newData[i][4],
+            anggaranAwal: newData[i][4],
             anggaranTerpakai: 0,
-            CashId: cashId,
+            FatherEventId: fatherEventId,
           });
-          fatherEventId = fatherEventCreated.id;
+          childEventId = childEventCreated.id;
         } else {
           if (
-            isNaN(Number(data[i].Kode)) === true &&
-            !data[i].__EMPTY &&
-            !data[i].Volume &&
-            !data[i]["Harga Satuan"]
+            newData[i][0] !== null &&
+            isNaN(Number(newData[i][0])) === false &&
+            !newData[i][2] &&
+            !newData[i][3] && 
+            newData[i][5] &&
+            newData[i][5] === 'RM'
           ) {
-            childEventCreated = await ChildEvent.create({
-              kode: data[i].Kode,
-              keterangan: data[i].Keterangan,
-              jumlahBiaya: data[i].Jumlah,
-              anggaranAwal: data[i].Jumlah,
+            dataEvent.kode = newData[i][0];
+            dataEvent.keterangan = newData[i][1];
+            dataEvent.jumlahBiaya = newData[i][4];
+            eventCreated = await Event.create({
+              kode: dataEvent.kode,
+              keterangan: dataEvent.keterangan,
+              anggaranAwal: dataEvent.jumlahBiaya,
+              jumlahBiaya: dataEvent.jumlahBiaya,
               anggaranTerpakai: 0,
-              FatherEventId: fatherEventId,
+              ChildEventId: childEventId,
             });
-            childEventId = childEventCreated.id;
-          } else {
-            if (
-              data[i].Kode &&
-              data[i].Keterangan &&
-              data[i].Jumlah &&
-              !data[i].Volume &&
-              !data[i]["Harga Satuan"]
-            ) {
-              dataEvent.kode = data[i].Kode;
-              dataEvent.keterangan = data[i].Keterangan;
-              dataEvent.jumlahBiaya = data[i].Jumlah;
-              eventCreated = await Event.create({
-                kode: dataEvent.kode,
-                keterangan: dataEvent.keterangan,
-                anggaranAwal: dataEvent.jumlahBiaya,
-                jumlahBiaya: dataEvent.jumlahBiaya,
-                anggaranTerpakai: 0,
-                ChildEventId: childEventId,
-              });
-              obj.datas.push({
-                id: eventCreated.id,
-                kode: eventCreated.kode,
-                keterangan: eventCreated.keterangan,
-                anggaranAwal: eventCreated.anggaranAwal,
-                jumlahBiaya: eventCreated.jumlahBiaya,
-                ChildEventId: eventCreated.ChildEventId,
-                anggaranTerpakai: eventCreated.anggaranTerpakai,
-                SubEvents: [],
-              });
-            } else if (
-              !data[i].Kode &&
-              data[i].Keterangan &&
-              data[i].Jumlah &&
-              data[i].Volume &&
-              data[i]["Harga Satuan"]
-            ) {
-              // let volume = data[i].Volume.split(" ");
-              // let qty = +volume[0];
-              // let unit = volume[1];
-              obj.datas[obj.datas.length - 1].SubEvents.push({
-                keterangan: data[i].Keterangan,
-                jumlahBiaya: data[i].Jumlah,
-                anggaranAwal: data[i].Jumlah,
-                anggaranTerpakai: 0,
-                // qty,
-                // unit,
-                // price: data[i]["Harga Satuan"],
-              });
-            }
-            dataEvent = {
-              kode: "",
-              keterangan: "",
-              anggaranAwal: 0,
-              jumlahBiaya: 0,
-              ChildEventId: 0,
+            obj.datas.push({
+              id: eventCreated.id,
+              kode: eventCreated.kode,
+              keterangan: eventCreated.keterangan,
+              anggaranAwal: eventCreated.anggaranAwal,
+              jumlahBiaya: eventCreated.jumlahBiaya,
+              ChildEventId: eventCreated.ChildEventId,
+              anggaranTerpakai: eventCreated.anggaranTerpakai,
+              SubEvents: [],
+            });
+          } 
+          else if (
+            newData[i][0] === null &&
+            newData[i][2] &&
+            newData[i][3]
+          ) {
+            // let volume = newData[i].Volume.split(" ");
+            // let qty = +volume[0];
+            // let unit = volume[1];
+            obj.datas[obj.datas.length - 1].SubEvents.push({
+              keterangan: newData[i][1],
+              jumlahBiaya: newData[i][4],
+              anggaranAwal: newData[i][4],
               anggaranTerpakai: 0,
-            };
+              // qty,
+              // unit,
+              // price: newData[i]["Harga Satuan"],
+            });
           }
+          dataEvent = {
+            kode: "",
+            keterangan: "",
+            anggaranAwal: 0,
+            jumlahBiaya: 0,
+            ChildEventId: 0,
+            anggaranTerpakai: 0,
+          };
         }
       }
     }
     return obj;
   } catch (err) {
-    console.log(err, "error di uploadEvents.js");
     next(err);
   }
 };
