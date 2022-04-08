@@ -125,7 +125,7 @@ export default function TableEvents({ uploadStatus }) {
                               <img src={infoIcon} alt="" />
                             </NavLink>
                           </div>
-                          <div>
+                          <div hidden>
                             <NavLink
                               to={`edit/event/${event.id}`}
                               className="btn bg-base-100 hover:bg-base-300"
@@ -133,7 +133,7 @@ export default function TableEvents({ uploadStatus }) {
                               <img src={editIcon} alt="" />
                             </NavLink>
                           </div>
-                          <div>
+                          <div hidden>
                             <button
                               className="btn bg-base-100 hover:bg-base-300"
                               onClick={() => deleteButton(event.id)}

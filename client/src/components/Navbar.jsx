@@ -119,7 +119,7 @@ export default function Navbar() {
                     </button>
                   </div>
                 )}
-              <div className="pt-2">
+              <div className="pt-2" hidden>
                 <NavLink
                   to="/add/event"
                   className="btn btn-ghost btn-sm rounded-btn"

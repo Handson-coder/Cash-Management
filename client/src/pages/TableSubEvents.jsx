@@ -60,7 +60,7 @@ export default function TableSubEvents() {
             ? eventForTableSubEvent.keterangan
             : ""}
         </h1>
-        <div className="pt-3 pl-5">
+        <div className="pt-3 pl-5" hidden>
           <NavLink
             className="btn bg-base-100 hover:bg-base-300"
             to={`/add/sub-event/${eventForTableSubEvent.id}`}
@@ -142,7 +142,7 @@ export default function TableSubEvents() {
                                 <img src={processIcon} alt="" />
                               </NavLink>
                             </div>
-                            <div>
+                            <div hidden>
                               <NavLink
                                 to={`/sub-event/edit/${subEvent.id}`}
                                 className="btn bg-base-100 hover:bg-base-300"
@@ -150,7 +150,7 @@ export default function TableSubEvents() {
                                 <img src={editIcon} alt="" />
                               </NavLink>
                             </div>
-                            <div>
+                            <div hidden>
                               <button
                                 className="btn bg-base-100 hover:bg-base-300"
                                 onClick={() => deleteButton(subEvent.id)}
