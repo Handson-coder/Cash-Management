@@ -102,31 +102,21 @@ export default function Navbar() {
           </div>
         </div>
       )}
-      <div className="hidden px-2 mx-2 navbar-center lg:flex">
+      <div className="px-2 mx-2 navbar-center lg:flex">
         <div className="flex items-stretch">
           {isLoggedIn ? (
             <div className="pl-5 flex">
-              {userLogin &&
-                userLogin.role === "developer" &&
-                userLogin.role !== "admin" && (
-                  <div className="pt-2">
-                    <button
-                      to="/add/event"
-                      className="btn btn-ghost btn-sm rounded-btn"
-                      onClick={() => checkUsers()}
-                    >
-                      Cek User Lists
-                    </button>
-                  </div>
-                )}
-              <div className="pt-2" hidden>
-                <NavLink
-                  to="/add/event"
-                  className="btn btn-ghost btn-sm rounded-btn"
-                >
-                  Tambahkan Event
-                </NavLink>
-              </div>
+              {userLogin && userLogin.role === "developer" && userLogin.role !== "admin" && (
+                <div className="pt-2">
+                  <button
+                    to="/add/event"
+                    className="btn btn-ghost btn-sm rounded-btn"
+                    onClick={() => checkUsers()}
+                  >
+                    Cek User Lists
+                  </button>
+                </div>
+              )}
               <div className="pl-5">
                 <NavLink
                   to="/history"

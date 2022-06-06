@@ -44,10 +44,10 @@ export default function SignIn() {
           title: "Oops...",
           text: `${err.response.data.message}`,
         });
-        setUser({
-          email: "",
-          password: "",
-        });
+        // setUser({
+        //   email: "",
+        //   password: "",
+        // });
       });
   };
 

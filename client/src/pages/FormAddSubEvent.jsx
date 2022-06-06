@@ -1,95 +1,61 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
-import { addingSubEvent, fetchingEvent } from "../store/actions";
+import { addingSubEvent } from "../store/actions";
 import Swal from "sweetalert2";
 
 export default function FormAddSubEvent() {
   const params = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const eventForTableSubEvent = useSelector(
-    (state) => state.eventForTableSubEvent
-  );
   const [nominalEditDisplay, setNominalEditDisplay] = useState("");
   const [payload, setPayload] = useState({
     keterangan: "",
-    // unit: "",
-    // price: 0,
     jumlahBiaya: 0,
     EventId: 0,
   });
-  useEffect(() => {
-    dispatch(fetchingEvent(params.id)); // eslint-disable-next-line
-  }, [dispatch]);
 
   const createButton = () => {
-    if (
-      eventForTableSubEvent &&
-      eventForTableSubEvent.id &&
-      payload.EventId === 0
-    ) {
-      payload.EventId = eventForTableSubEvent.id;
-      if(payload.jumlahBiaya) {
-        payload.jumlahBiaya = +(payload.jumlahBiaya)
-      }
-      dispatch(addingSubEvent(payload))
-        .then(({ data }) => {
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: data.message,
-            showConfirmButton: false,
-            timer: 1500,
-          });
-          setPayload({
-            keterangan: "",
-            // unit: "",
-            // price: 0,
-            jumlahBiaya: 0,
-            EventId: 0,
-          });
-          navigate(`/event/${payload.EventId}`);
-          setPayload({
-            keterangan: "",
-            unit: "",
-            price: 0,
-            qty: 0,
-            EventId: 0,
-          });
-        })
-        .catch((err) => {
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: `${err.response.data.message}`,
-          });
-          setPayload({
-            keterangan: "",
-            unit: "",
-            price: 0,
-            qty: 0,
-            EventId: 0,
-          });
+    if (params && params.eventId) {
+      payload.EventId = params.eventId
+    }
+    if (payload.jumlahBiaya) {
+      payload.jumlahBiaya = +payload.jumlahBiaya;
+    }
+    dispatch(addingSubEvent(payload))
+      .then(({ data }) => {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: data.message,
+          showConfirmButton: false,
+          timer: 1500,
         });
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: `Terdeteksi website anda telah mengalami refresh(reload), silahkan klik "Substansi Penindakan" untuk membuat sub-event kembali`,
+        setPayload({
+          keterangan: "",
+          jumlahBiaya: 0,
+          EventId: 0,
+        });
+        navigate(`/father-event/${params.fatherEventId}/child-event/${params.childEventId}/event/${params.eventId}`);
+        setPayload({
+          keterangan: "",
+          jumlahBiaya: 0,
+          EventId: 0,
+        });
+      })
+      .catch((err) => {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: `${err.response.data.message}`,
+        });
+        setPayload({
+          keterangan: "",
+          jumlahBiaya: 0,
+          EventId: 0,
+        });
       });
-    }
-  };
-
-  const windowRefreshed = () => {
-    if (!eventForTableSubEvent.keterangan) {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: `Terdeteksi website anda telah mengalami refresh(reload), silahkan klik "Substansi Penindakan" untuk membuat sub-event kembali`,
-      });
-    }
   };
 
   const changeIntoMoneyFormat = (money) => {
@@ -137,18 +103,6 @@ export default function FormAddSubEvent() {
                     value={payload.keterangan}
                   />
                 </div>
-                {/* <div className="form-control mb-2">
-                  <label className="label">
-                    <span className="font-bold">Satuan</span>
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Satuan"
-                    className="input border-neutral-focus input-bordered "
-                    onChange={(e) => inputValue(e, "unit")}
-                    value={payload.unit}
-                  />
-                </div> */}
                 <div className="form-control">
                   <label className="label">
                     <span className="font-bold">Anggaran</span>
@@ -164,38 +118,11 @@ export default function FormAddSubEvent() {
                     value={payload.jumlahBiaya}
                   />
                 </div>
-                {/* <div className="form-control mb-2">
-                  <label className="label">
-                    <span className="font-bold">Volume</span>
-                  </label>
-                  <input
-                    type="number"
-                    min="0"
-                    className="input border-neutral-focus input-bordered "
-                    onChange={(e) => inputValue(e, "qty")}
-                    value={payload.qty}
-                  />
-                </div> */}
-                <div className="form-control mb-2">
-                  <label className="label">
-                    <span className="font-bold">Event</span>
-                  </label>
-                  <input
-                    type="text"
-                    className="input border-neutral-focus input-bordered"
-                    onChange={windowRefreshed}
-                    value={
-                      eventForTableSubEvent.keterangan
-                        ? eventForTableSubEvent.keterangan
-                        : ""
-                    }
-                  />
-                </div>
                 <div className="mt-5 seperate">
                   <div className="button-cancel">
                     <NavLink
                       type="button"
-                      to={`/`}
+                      to={`/father-event/${params.fatherEventId}/child-event/${params.childEventId}/event/${params.eventId}`}
                       className="btn btn-neutral rounded-xl"
                       aria-pressed="true"
                     >

@@ -14,21 +14,31 @@ import {
   SET_EVENT_KODE,
   FETCH_EVENT_FOR_EDIT_EVENT_PAGE,
   FETCH_EVENT_FOR_TABLE_SUB_EVENT,
-  FETCH_FATHER_EVENTS
+  FETCH_FATHER_EVENTS,
+  SET_CURRENT_BALANCE,
+  SET_FATHER_EVENT,
+  SET_CHILD_EVENT,
+  SET_EVENT,
+  DELETE_CHILD_EVENT,
+  DELETE_FATHER_EVENT
 } from "../keys";
 
 const initialState = {
-  events: [],
+  cash: [],
   fatherEvents: [],
   childEvents: [],
-  cash: 0,
+  events: [],
   subEvents: [],
+  histories: [],
+  fatherEvent: {},
+  childEvent: {},
+  event: {},
+  subEvent: {},
+  userLogin: {},
   eventForTableSubEvent: {},
   eventForEditEventPage: {},
-  subEvent: {},
   isLoggedIn: false,
-  userLogin: {},
-  histories: [],
+  currentBalance: 0,
   eventLength: 0,
   fatherKode: "",
   childKode: "",
@@ -53,6 +63,11 @@ function reducer(state = initialState, action) {
         ...state,
         events: state.events.filter((L) => L.id !== payload),
       };
+    case DELETE_CHILD_EVENT:
+      return {
+        ...state,
+        childEvents: state.childEvents.filter((L) => L.id !== payload),
+      };
     case FETCH_EVENT_FOR_TABLE_SUB_EVENT:
       return { ...state, eventForTableSubEvent: payload };
     case FETCH_EVENT_FOR_EDIT_EVENT_PAGE:
@@ -63,6 +78,11 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         subEvents: state.subEvents.filter((L) => L.id !== payload),
+      };
+    case DELETE_FATHER_EVENT:
+      return {
+        ...state,
+        fatherEvents: state.fatherEvents.filter((L) => L.id !== payload),
       };
     case SET_IS_LOGGED_IN:
       return { ...state, isLoggedIn: payload };
@@ -76,6 +96,14 @@ function reducer(state = initialState, action) {
       return { ...state, childKode: payload };
     case SET_EVENT_KODE:
       return { ...state, eventKode: payload };
+    case SET_CURRENT_BALANCE: 
+      return { ...state, currentBalance: payload}
+    case SET_FATHER_EVENT:
+      return { ...state, fatherEvent: payload };
+    case SET_CHILD_EVENT:
+      return { ...state, childEvent: payload };
+    case SET_EVENT:
+      return { ...state, event: payload };
     default:
       return state;
   }

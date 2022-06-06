@@ -1,15 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
-import { useParams } from "react-router";
 import {
-  fetchingEvents,
-  deletingEvent,
-  deleteEvent,
-  fetchingCash,
-  findOneChildEvent,
-  fetchingFatherEvent,
-  setCurrentBalance
+  deleteFatherEvent,
+  deletingFatherEvent,
+  fetchingFatherEvents,
+  setCurrentBalance,
 } from "../store/actions/index.js";
 import infoIcon from "../assets/info.png";
 import deleteIcon from "../assets/delete.png";
@@ -17,36 +13,20 @@ import editIcon from "../assets/edit.png";
 import Swal from "sweetalert2";
 import Home from "../pages/Home.jsx";
 
-export default function TableEvents({ uploadStatus }) {
+export default function TableFatherEvents() {
   const dispatch = useDispatch();
-  const params = useParams();
-  const fatherEvent = useSelector((state) => state.fatherEvent);
-  const childEvent = useSelector((state) => state.childEvent);
-  const events = useSelector((state) => state.events);
-  const [finishFetching, setFinishFetching] = useState(false);
-  const [finishProcessEvent, setFinishProcessEvent] = useState(false);
+  const fatherEvents = useSelector((state) => state.fatherEvents);
   const classNameForFullView =
     "flex flex-col mx-5 bg-neutral rounded-lg shadow-md container-full-view";
 
   useEffect(() => {
-    dispatch(fetchingFatherEvent(params.fatherEventId));
-    dispatch(findOneChildEvent(params.childEventId)); // eslint-disable-next-line
+    dispatch(fetchingFatherEvents());
   }, [dispatch]);
 
-  if (
-    (uploadStatus === true && finishFetching === false) ||
-    finishProcessEvent === true
-  ) {
-    dispatch(fetchingEvents());
-    setFinishFetching(true);
-    setFinishProcessEvent(false);
-  }
-
   const deleteButton = (id) => {
-    dispatch(deletingEvent(id))
+    dispatch(deletingFatherEvent(id))
       .then(({ data }) => {
-        dispatch(deleteEvent(data.id));
-        dispatch(fetchingCash());
+        dispatch(deleteFatherEvent(data.id));
         dispatch(setCurrentBalance(data.cash))
         Swal.fire({
           position: "top-end",
@@ -69,31 +49,18 @@ export default function TableEvents({ uploadStatus }) {
     <div>
       <Home></Home>
       <div className="grid justify-items-center">
-        {fatherEvent &&
-          childEvent &&
-          fatherEvent.kode &&
-          childEvent.kode &&
-          childEvent.keterangan && (
-            <div className="text-center justify-center lg:text-left bg-blue-900">
-              <h1 className="mb-1 xs:mb-1 xs:mt-1 text-2xl xs:text-xl font-bold italic text-accent uppercase bg-blue-900">
-                {`${fatherEvent.kode} - ${childEvent.kode} - ${childEvent.keterangan}`}
-              </h1>
-            </div>
-          )}
-        {fatherEvent && childEvent && fatherEvent.id && childEvent.id && (
-          <div className="font-mono pt-4 pb-4" hidden>
-            <NavLink
-              className="btn bg-accent text-black font-extralight hover:bg-accent-focus hover:text-blue-900"
-              to={`/add/father-event/${fatherEvent.id}/child-event/${childEvent.id}/event`}
-            >
-              Tambahkan Event
-            </NavLink>
-          </div>
-        )}
+        <div className="font-mono pb-4" hidden>
+          <NavLink
+            className="btn bg-accent text-black font-extralight hover:bg-accent-focus hover:text-blue-900"
+            to="/add/father-event"
+          >
+            Tambahkan Father Event
+          </NavLink>
+        </div>
       </div>
       <div
         className={
-          events.length > 4
+          fatherEvents.length > 5
             ? "flex flex-col mx-5 rounded-lg shadow-md pb-4 background-color-nih"
             : classNameForFullView
         }
@@ -131,31 +98,27 @@ export default function TableEvents({ uploadStatus }) {
                   </tr>
                 </thead>
                 <tbody className="bg-base-300 divide-y divide-gray-700">
-                  {events.map((event) => {
+                  {fatherEvents.map((fatherEvent) => {
                     return (
-                      <tr key={event.id}>
+                      <tr key={fatherEvent.id}>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm">{event.kode}</div>
-                          {/* {event &&
-                            event.ChildEvent &&
-                            event.ChildEvent.FatherEvent &&
-                            event.ChildEvent.FatherEvent.kode && (
-                              <div className="text-sm">{`${event.ChildEvent.FatherEvent.kode}-${event.ChildEvent.kode}-${event.kode}`}</div>
-                            )} */}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm">{event.keterangan}</div>
+                          <div className="text-sm">{fatherEvent.kode}</div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="text-sm">
-                            {event.jumlahBiaya.toLocaleString("id-id")}
+                            {fatherEvent.keterangan}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="text-sm">
+                            {fatherEvent.jumlahBiaya.toLocaleString("id-id")}
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                           <div className="flex button-option">
                             <div>
                               <NavLink
-                                to={`event/${event.id}`}
+                                to={`father-event/${fatherEvent.id}`}
                                 className="btn bg-base-100 hover:bg-base-300"
                               >
                                 <img src={infoIcon} alt="" />
@@ -163,7 +126,7 @@ export default function TableEvents({ uploadStatus }) {
                             </div>
                             <div hidden>
                               <NavLink
-                                to={`edit/event/${event.id}`}
+                                to={`edit/father-event/${fatherEvent.id}`}
                                 className="btn bg-base-100 hover:bg-base-300"
                               >
                                 <img src={editIcon} alt="" />
@@ -172,7 +135,7 @@ export default function TableEvents({ uploadStatus }) {
                             <div>
                               <button
                                 className="btn bg-base-100 hover:bg-base-300"
-                                onClick={() => deleteButton(event.id)}
+                                onClick={() => deleteButton(fatherEvent.id)}
                               >
                                 <img src={deleteIcon} alt="" />
                               </button>

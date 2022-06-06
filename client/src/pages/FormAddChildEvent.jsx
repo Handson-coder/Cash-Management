@@ -1,24 +1,22 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useParams } from "react-router";
 import {
-  creatingEvent,
+  createNewChildEvent,
 } from "../store/actions/index";
 import Swal from "sweetalert2";
 
-export default function FormAddEvent() {
+export default function FormAddChildEvent() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const params = useParams();
-  const childEvents = useSelector((state) => state.childEvents);
   const [nominalEditDisplay, setNominalEditDisplay] = useState("");
-  const classNameForFullView = "form-parent";
   const [payload, setPayload] = useState({
     kode: "",
     keterangan: "",
     anggaranAwal: 0,
-    ChildEventId: 0,
+    FatherEventId: 0,
   });
 
   const changeIntoMoneyFormat = (money) => {
@@ -41,15 +39,15 @@ export default function FormAddEvent() {
       showConfirmButton: false,
       timer: 1500,
     });
-    if (params && params.childEventId) {
-      payload.ChildEventId = params.childEventId;
+    if (params && params.fatherEventId) {
+      payload.FatherEventId = params.fatherEventId;
     }
-    dispatch(creatingEvent(payload))
+    dispatch(createNewChildEvent(payload))
       .then(({ data }) => {
         Swal.fire({
           position: "top-end",
           icon: "success",
-          title: `Event '${data.keterangan}' telah berhasil dibuat`,
+          title: `Child Event '${data.keterangan}' telah berhasil dibuat`,
           showConfirmButton: false,
           timer: 1500,
         });
@@ -57,9 +55,9 @@ export default function FormAddEvent() {
           kode: "",
           keterangan: "",
           anggaranAwal: 0,
-          ChildEventId: 0,
+          FatherEventId: 0,
         });
-        navigate(`/father-event/${params.fatherEventId}/child-event/${params.childEventId}`);
+        navigate(`/father-event/${params.fatherEventId}`);
       })
       .catch((err) => {
         Swal.fire({
@@ -71,7 +69,7 @@ export default function FormAddEvent() {
           kode: "",
           keterangan: "",
           anggaranAwal: 0,
-          ChildEventId: 0,
+          FatherEventId: 0,
         });
       });
   };
@@ -86,24 +84,18 @@ export default function FormAddEvent() {
   };
 
   return (
-    <div
-      className={
-        childEvents.length > 0 && payload.ChildEventId !== 0
-          ? classNameForFullView
-          : "form-parent container-full-view"
-      }
-    >
+    <div className="form-parent container-full-view">
       <div className="form-container">
         <div className="text-center justify-center lg:text-left bg-blue-900">
           <h1 className="mt-3 mb-1 xs:mb-1 xs:mt-1 text-4xl xs:text-xl font-bold italic text-accent uppercase bg-blue-900">
-            Add Event
+            Add Child Event
           </h1>
         </div>
         <div className="bg-blue-900">
           <div className="flex-col justify-center hero-content lg:flex-row">
             <div className="card flex-shrink-0 shadow-2xl bg-base-200">
               <div className="card-body form-nya">
-                {params && params.fatherEventId && params.childEventId && (
+                {params && params.fatherEventId && (
                   <div>
                     <div className="form-control">
                       <label className="label">
@@ -151,7 +143,7 @@ export default function FormAddEvent() {
                   <div className="button-cancel">
                     <NavLink
                       type="button"
-                      to={`/father-event/${params.fatherEventId}/child-event/${params.childEventId}`}
+                      to={`/father-event/${params.fatherEventId}`}
                       className="btn btn-neutral rounded-xl"
                       aria-pressed="true"
                     >

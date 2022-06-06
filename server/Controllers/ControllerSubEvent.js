@@ -231,6 +231,7 @@ class ControllerSubEvent {
         });
         res.status(200).json({
           id: subEvent.id,
+          cash: dataCash.cash,
           message: `Sub Event '${subEvent.keterangan}' berhasil dihapus`,
         });
       } else {

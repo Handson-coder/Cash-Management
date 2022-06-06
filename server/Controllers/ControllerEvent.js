@@ -65,7 +65,7 @@ class ControllerEvent {
       kode,
       keterangan,
       anggaranAwal,
-      jumlahBiaya: 0,
+      jumlahBiaya: anggaranAwal,
       anggaranTerpakai: 0,
       ChildEventId: +ChildEventId,
     };
@@ -155,15 +155,15 @@ class ControllerEvent {
       const fatherEvent = childEvent.FatherEvent;
       const cash = fatherEvent.Cash;
       let dataChildEvent = {
-        anggaranAwal: childEvent.anggaranAwal - event.anggaranAwal,
+        anggaranAwal: childEvent.anggaranAwal - event.jumlahBiaya,
         jumlahBiaya: childEvent.jumlahBiaya - event.jumlahBiaya,
       };
       let dataFatherEvent = {
-        anggaranAwal: fatherEvent.anggaranAwal - event.anggaranAwal,
+        anggaranAwal: fatherEvent.anggaranAwal - event.jumlahBiaya,
         jumlahBiaya: fatherEvent.jumlahBiaya - event.jumlahBiaya,
       };
       let dataCash = {
-        anggaranAwal: cash.anggaranAwal - event.anggaranAwal,
+        anggaranAwal: cash.anggaranAwal - event.jumlahBiaya,
         cash: cash.cash - event.jumlahBiaya,
       };
       if (foundEvent) {
@@ -355,11 +355,8 @@ class ControllerEvent {
       }
       const uploadedEvents = await uploadEvents(data, next);
       const uploadedSubEvents = await uploadSubEvents(uploadedEvents, next);
-      const result = await Event.findAll({
-        order: [["id", "DESC"]],
-        include: {
-          model: SubEvent,
-        },
+      const result = await FatherEvent.findAll({
+        order: [["id", "ASC"]],
       });
       if (
         uploadedEvents.datas.length > 0 &&
@@ -373,7 +370,7 @@ class ControllerEvent {
         });
         res.status(201).json({
           cash: uploadedEvents.cash,
-          events: result,
+          fatherEvents: result,
           histories: historyData,
           message: `Realisasi Anggaran berhasil di upload`,
         });

@@ -6,7 +6,8 @@ class ControllerCash {
       const result = await Cash.findAll();
       if(result && result.length > 0) {
         res.status(201).json({
-          cash: result[0].cash,
+          cash: result,
+          currentBalance: result[0].cash,
         });
       } else {
         res.status(201).json({

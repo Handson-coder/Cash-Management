@@ -1,20 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  fetchCash,
+  setCurrentBalance,
   fetchingCash,
   uploadingEvents,
-  fetchEvents,
   downloadingFile,
+  fetchFatherEvents
 } from "../store/actions/index.js";
-import TableEvents from "../components/TableEvents.jsx";
 import Swal from "sweetalert2";
 import * as XLSX from "xlsx";
 
 export default function Home() {
   const dispatch = useDispatch();
-  const cash = useSelector((state) => state.cash);
-  const [uploadStatus, setUploadStatus] = useState(false);
+  const currentBalance = useSelector((state) => state.currentBalance);
   useEffect(() => {
     dispatch(fetchingCash());
   }, [dispatch]);
@@ -132,20 +130,21 @@ export default function Home() {
       const {
         Penindakan = []
       } = result
-      dispatch(uploadingEvents(Penindakan)).then((res) => {
-        if(res && res.status === 201 && res.statusText === "Created") {
-          dispatch(fetchCash(res.data.cash));
-          dispatch(fetchEvents(res.data.events));
-          setUploadStatus(true);
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: res.data.message,
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        }
-      })
+      if (Penindakan) {
+        dispatch(uploadingEvents(Penindakan)).then((res) => {
+          if(res && res.status === 201 && res.statusText === "Created") {
+            dispatch(setCurrentBalance(res.data.cash));
+            dispatch(fetchFatherEvents(res.data.fatherEvents))
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: res.data.message,
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          }
+        })
+      }
     };
     reader.readAsArrayBuffer(oFile);
   };
@@ -192,9 +191,17 @@ export default function Home() {
           <div className="current-balance">
             <div>
               <div className="text-2xl font-mono pb-3">Anggaran Saat Ini</div>
-              <div className="text-2xl font-mono current-balance">
-                {cash.toLocaleString("id-id")}
-              </div>
+              {
+                currentBalance ? (
+                  <div className="text-2xl font-mono current-balance">
+                    {currentBalance.toLocaleString("id-id")}
+                  </div>
+                ) : (
+                  <div className="text-2xl font-mono current-balance">
+                    0
+                  </div>
+                )
+              }
             </div>
           </div>
         </div>
@@ -207,7 +214,6 @@ export default function Home() {
           </button>
         </div>
       </div>
-      <TableEvents uploadStatus={uploadStatus}></TableEvents>
     </div>
   );
 }
